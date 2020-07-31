@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:backgroundTint="@color/colorLightPurpleTrans"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/_61sdp"
+    app:cardElevation="0dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="@dimen/_4sdp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="@dimen/_14sdp"
+            android:layout_height="@dimen/_14sdp"
+            android:layout_marginStart="@dimen/_6sdp"
+            android:layout_marginTop="@dimen/_6sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/disease_icon" />
+
+        <TextView
+            android:id="@+id/near_by_zone_disease_name"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/_6sdp"
+            android:gravity="center_vertical"
+            android:textAllCaps="true"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/_9sdp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView5"
+            app:layout_constraintStart_toEndOf="@+id/imageView5"
+            app:layout_constraintTop_toTopOf="@+id/imageView5"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <TextView
+            android:id="@+id/near_by_zone_disease_discription"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_4sdp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            app:layout_constraintBottom_toTopOf="@+id/start_date_lable"
+            app:layout_constraintEnd_toStartOf="@+id/report_view"
+            app:layout_constraintStart_toStartOf="@+id/near_by_zone_disease_name"
+            app:layout_constraintTop_toBottomOf="@+id/near_by_zone_disease_name" />
+
+        <TextView
+            android:id="@+id/start_date_lable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_6sdp"
+            android:text="@string/start_date"
+            android:textColor="@color/colorPurple"
+            android:textSize="@dimen/_9sdp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/near_by_zone_disease_discription" />
+
+        <TextView
+            android:id="@+id/start_date"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/_4sdp"
+            android:text="2020-08-08"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/_9sdp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/start_date_lable"
+            app:layout_constraintStart_toEndOf="@+id/start_date_lable"
+            app:layout_constraintTop_toTopOf="@+id/start_date_lable" />
+
+        <TextView
+            android:id="@+id/diatance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_6sdp"
+            android:text="10km"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/_9sdp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/near_by_zone_disease_discription" />
+
+        <TextView
+            android:id="@+id/textView15"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginEnd="@dimen/_4sdp"
+            android:text="@string/distance"
+            android:textColor="@color/colorPurple"
+            android:textSize="@dimen/_9sdp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/diatance"
+            app:layout_constraintEnd_toStartOf="@+id/diatance"
+            app:layout_constraintTop_toTopOf="@+id/diatance" />
+
+        <ImageView
+            android:id="@+id/report_view"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/view_report_btn" />
+
+        <ImageView
+            android:id="@+id/imageView7"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/report_view"
+            app:layout_constraintEnd_toEndOf="@+id/report_view"
+            app:layout_constraintStart_toStartOf="@+id/report_view"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/view_report_button_24" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

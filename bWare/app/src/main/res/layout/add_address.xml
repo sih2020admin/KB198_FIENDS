@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="@dimen/_179sdp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_36sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/add_address_image" />
+
+    <EditText
+        android:id="@+id/place"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_32sdp"
+        android:layout_marginTop="@dimen/_22sdp"
+        android:background="@drawable/edittext_background"
+        android:ems="10"
+        android:hint="@string/place"
+        android:inputType="textPersonName"
+        android:paddingStart="@dimen/_14sdp"
+        android:textSize="@dimen/_13sdp"
+        android:paddingEnd="@dimen/_14sdp"
+        android:textColor="@color/colorPurple"
+        app:layout_constraintEnd_toEndOf="@+id/textView8"
+        app:layout_constraintStart_toStartOf="@+id/textView8"
+        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+    <EditText
+        android:id="@+id/pin_code"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_32sdp"
+        android:layout_marginTop="@dimen/_12sdp"
+        android:background="@drawable/edittext_background"
+        android:ems="10"
+        android:hint="@string/pin_code"
+        android:inputType="phone"
+        android:paddingStart="@dimen/_14sdp"
+        android:textSize="@dimen/_13sdp"
+        android:paddingEnd="@dimen/_14sdp"
+        android:textColor="@color/colorPurple"
+        app:layout_constraintEnd_toEndOf="@+id/district"
+        app:layout_constraintStart_toStartOf="@+id/district"
+        app:layout_constraintTop_toBottomOf="@+id/district" />
+
+    <Button
+        android:id="@+id/add_address_btn"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_29sdp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/_72sdp"
+        android:background="@drawable/button_background"
+        android:enabled="false"
+        android:elevation="@dimen/_4sdp"
+        android:fontFamily="arial"
+        android:text="@string/add_address"
+        android:textAllCaps="false"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/_14sdp"
+        android:textStyle="bold"
+        app:elevation="@dimen/_4sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/pin_code"
+        app:layout_constraintStart_toStartOf="@+id/pin_code" />
+
+    <Spinner
+        android:id="@+id/state"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_32sdp"
+        android:layout_marginTop="@dimen/_12sdp"
+        android:background="@drawable/edittext_background"
+        app:layout_constraintEnd_toEndOf="@+id/place"
+        app:layout_constraintStart_toStartOf="@+id/place"
+        app:layout_constraintTop_toBottomOf="@+id/place" />
+
+    <Spinner
+        android:id="@+id/district"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_32sdp"
+        android:layout_marginTop="@dimen/_12sdp"
+        android:background="@drawable/edittext_background"
+        app:layout_constraintEnd_toEndOf="@+id/state"
+        app:layout_constraintStart_toStartOf="@+id/state"
+        app:layout_constraintTop_toBottomOf="@+id/state" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_36sdp"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginEnd="@dimen/_36sdp"
+        android:gravity="center"
+        android:text="@string/enter_your_address_details"
+        android:textColor="@color/colorBlack"
+        android:textSize="@dimen/_14sdp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
