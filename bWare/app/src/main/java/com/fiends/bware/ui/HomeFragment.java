@@ -67,6 +67,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import im.delight.android.location.SimpleLocation;
 import io.supercharge.shimmerlayout.ShimmerLayout;
 import timber.log.Timber;
 
@@ -179,13 +180,13 @@ public class HomeFragment extends Fragment implements ServerResponse, OnMapReady
         outrageShimmer.setShimmerAnimationDuration(1000);
         outrageShimmer.startShimmerAnimation();
         refreshLayout.setRefreshing(true);
+
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 updateStatus("500");
             }
         });
-
         scrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
             @SuppressLint("ResourceType")
             @Override
@@ -260,45 +261,36 @@ public class HomeFragment extends Fragment implements ServerResponse, OnMapReady
     }
 
     private void initMap(Bundle savedInstanceState) {
-        new GetLocation(getActivity(), new GetLocation.Response() {
-            @Override
-            public void getLocation(String latitude, String longitude) {
-                SupportMapFragment mapFragment;
-                if (savedInstanceState == null) {
+        SupportMapFragment mapFragment;
+        if (savedInstanceState == null) {
 
-                    final FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                    MapboxMapOptions options = MapboxMapOptions.createFromAttributes(getContext(), null);
+            final FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            MapboxMapOptions options = MapboxMapOptions.createFromAttributes(getContext(), null);
+            SimpleLocation location = new SimpleLocation(getContext());
                     options.camera(new CameraPosition.Builder()
-                            .target(new LatLng(Double.parseDouble(latitude), Double.parseDouble(longitude)))
-                            .zoom(11)
+                            .target(new LatLng(location.getLatitude(), location.getLongitude()))
+                            .zoom(12)
                             .build());
-                    mapFragment = SupportMapFragment.newInstance(options);
-                    transaction.add(R.id.mapContainer, mapFragment, "com.mapbox.map");
-                    transaction.commit();
-                } else {
-                    mapFragment = (SupportMapFragment) getActivity().getSupportFragmentManager().findFragmentByTag("com.mapbox.map");
-                }
-                if (mapFragment != null) {
-                    mapFragment.getMapAsync(HomeFragment.this);
-                }
-            }
-        });
+            mapFragment = SupportMapFragment.newInstance(options);
+            transaction.add(R.id.mapContainer, mapFragment, "com.mapbox.map");
+            transaction.commit();
+        } else {
+            mapFragment = (SupportMapFragment) getActivity().getSupportFragmentManager().findFragmentByTag("com.mapbox.map");
+        }
+        if (mapFragment != null) {
+            mapFragment.getMapAsync(HomeFragment.this);
+        }
     }
 
     private void updateStatus(final String distance) {
 
-        new GetLocation(getActivity(), new GetLocation.Response() {
-            @Override
-            public void getLocation(String latitude, String longitude) {
-                String locations = "[" + longitude + ", " + latitude + "]";
-                Log.i("PS_NITHIN2", latitude);
-                nearByZonePager.removeAllViews();
-                sliderShimmer.setVisibility(View.VISIBLE);
-                sliderShimmer.startShimmerAnimation();
-                initZoneSlider(distance, locations);
-                initRedZone(locations, "activeOutrages");
-            }
-        });
+        SimpleLocation location = new SimpleLocation(getContext(), true);
+        String locations = "[" + location.getLongitude() + ", " + location.getLatitude() + "]";
+        nearByZonePager.removeAllViews();
+        sliderShimmer.setVisibility(View.VISIBLE);
+        sliderShimmer.startShimmerAnimation();
+        initZoneSlider(distance, locations);
+        initRedZone(locations, "activeOutrages");
 
     }
 
@@ -388,8 +380,13 @@ public class HomeFragment extends Fragment implements ServerResponse, OnMapReady
     @Override
     public void RedZone(boolean success, ArrayList<NearByZoneModel> nearByZoneModels, ArrayList<NearByZoneModel> redZoneLocationModel) {
         if (success) {
-            outrageShimmer.stopShimmerAnimation();
-            outrageShimmer.setVisibility(View.INVISIBLE);
+            if (nearByZoneModels.size() == 0 && redZoneLocationModel.size() == 0) {
+                outrageShimmer.setVisibility(View.VISIBLE);
+                outrageShimmer.startShimmerAnimation();
+            } else {
+                outrageShimmer.stopShimmerAnimation();
+                outrageShimmer.setVisibility(View.INVISIBLE);
+            }
             initRedZone(nearByZoneModels);
 //            setUpMapLayer(redZoneLocationModel);
         } else {
@@ -422,6 +419,8 @@ public class HomeFragment extends Fragment implements ServerResponse, OnMapReady
             });
         }
     }
+
+
 //
 //    private void setUpMapLayer(ArrayList<NearByZoneModel> redZoneLocationModel) {
 //
@@ -674,4 +673,5 @@ public class HomeFragment extends Fragment implements ServerResponse, OnMapReady
     public void onPermissionResult(boolean granted) {
 
     }
+
 }

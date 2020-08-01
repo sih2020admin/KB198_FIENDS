@@ -51,14 +51,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            JSONObject jsonObject = new JSONObject();
-            try {
-                jsonObject.put("fcmRegToken",s);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            new ServerRequest().setUrl(getString(R.string.SendAddress))
-                    .sendToken(jsonObject, token);
         } else {
             try {
                 FileOutputStream stream = new FileOutputStream(path);
@@ -104,8 +96,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             try {
                 object = new JSONObject(remoteMessage.getData().get("obj"));
                 Log.i("Notification 1",object.toString());
-                new BwareFiles(this).saveJSONDataC("Notify", object.toString());
-                Intent notificationIntent = new Intent(MyFirebaseMessagingService.this, NotifyMessageActivity.class);
+                Intent notificationIntent = new Intent(MyFirebaseMessagingService.this, NotificationActivity.class);
                 PendingIntent pendingIntent = PendingIntent.getActivity(MyFirebaseMessagingService.this,
                         0, notificationIntent, 0);
                 shoeNotification(object.getString("title"), object.getString("description"),Color.rgb(3, 218, 197), pendingIntent);

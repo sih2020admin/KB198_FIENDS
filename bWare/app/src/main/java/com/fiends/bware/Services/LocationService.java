@@ -33,6 +33,8 @@ import org.json.JSONObject;
 import java.time.Instant;
 import java.util.ArrayList;
 
+import im.delight.android.location.SimpleLocation;
+
 import static com.fiends.bware.App.CHANNEL_ID;
 import static com.fiends.bware.Utils.Bware.CIRCLE_LAYER_ID;
 import static com.fiends.bware.Utils.Bware.DISTANCE;
@@ -73,105 +75,103 @@ public class LocationService extends Service {
         @Override
         public void run() {
             if (!isRunning) {
-                new GetLocation(LSactivity, new GetLocation.Response() {
-                    @Override
-                    public void getLocation(String latitude, String longitude) {
-                        JSONArray location = new JSONArray();
-                        location.put(longitude);
-                        location.put(latitude);
 
-                        JSONObject jsonLocation = new JSONObject();
-                        try {
-                            jsonLocation.put("location", location);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        new ServerRequest(LSactivity).setUrl(getString(R.string.SendAddress)).sendLocation(jsonLocation, token);
-                    }
-                });
+                SimpleLocation locations = new SimpleLocation(LSactivity);
+                JSONArray location = new JSONArray();
+                try {
+                    location.put(locations.getLongitude());
+                    location.put(locations.getLongitude());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                JSONObject jsonLocation = new JSONObject();
+                try {
+                    jsonLocation.put("location", location);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                new ServerRequest(LSactivity).setUrl(getString(R.string.SendAddress)).sendLocation(jsonLocation, token);
             }
             handler.postDelayed(runnable, 30000);
         }
     };
 
     private void startListening() {
-        new GetLocation(LSactivity, new GetLocation.Response() {
+        JSONObject jsonObject = new JSONObject();
+        JSONArray jsonArray = new JSONArray();
+
+        Instant instant = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            instant = Instant.now();
+        }
+
+        SimpleLocation locations = new SimpleLocation(LSactivity);
+        try {
+            jsonObject.put("TIME", instant.toString());
+            jsonArray.put(locations.getLongitude());
+            jsonArray.put(locations.getLatitude());
+            jsonObject.put("LOCATION", jsonArray);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        BwareFiles bwareFiles = new BwareFiles(LSactivity);
+
+        String locationM = "[" + locations.getLongitude() + ", " + locations.getLatitude() + "]";
+        new ServerRequest(LSactivity).setUrl(getString(R.string.GetRedZone) + "/" + locationM, new ServerResponse() {
             @Override
-            public void getLocation(String latitude, String longitude) {
-
-                JSONObject jsonObject = new JSONObject();
-                JSONArray jsonArray = new JSONArray();
-
-                Instant instant = null;
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                    instant = Instant.now();
-                }
-
-                try {
-                    jsonObject.put("TIME", instant.toString());
-                    jsonArray.put(longitude);
-                    jsonArray.put(latitude);
-                    jsonObject.put("LOCATION", jsonArray);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                BwareFiles bwareFiles = new BwareFiles(LSactivity);
-
-                String locationM = "[" + longitude + ", " + latitude + "]";
-                new ServerRequest(LSactivity).setUrl(getString(R.string.GetRedZone) + "/" + locationM, new ServerResponse() {
-                    @Override
-                    public void NearByZoneResponse(boolean success, ArrayList<NearByZoneModel> nearByZoneModels) {
-
-                    }
-
-                    @Override
-                    public void RedZone(boolean success, ArrayList<NearByZoneModel> nearByZoneModels, ArrayList<NearByZoneModel> redZoneLocationModel) {
-
-                        for (int i = 0; i < redZoneLocationModel.size(); i++) {
-                            HaversineAlgorithm haversineAlgorithm = new HaversineAlgorithm();
-                            if (haversineAlgorithm.Notify(redZoneLocationModel.get(i).getLocation(), locationM, redZoneLocationModel.get(i).getRadius())) {
-                                showNotification("You're in Red Zone", String.valueOf("Total Red Zone Count : " + redZoneLocationModel.size()), Color.rgb(200, 0, 0));
-                                break;
-                            }
-                        }
-                        if (redZoneLocationModel.size() == 0) {
-                            showNotification("You're Safe Now", String.valueOf("Total Red Zone Count : " + redZoneLocationModel.size()), Color.rgb(0, 200, 0));
-                        }
-                    }
-
-                    @Override
-                    public void RedZoneResponse(boolean success, String response) {
-                        if (success) {
-                            new BwareFiles(LSactivity).saveJSONData("Red Zone", response);
-                        }
-                    }
-
-                    @Override
-                    public void DiseaseCount(String state, String district, String place) {
-
-                    }
-
-                    @Override
-                    public void DiseaseClick(String diseaseName, String sDate) {
-
-                    }
-                }).getRedZone("activeOutrages");
-
-                if (bwareFiles.getFileLength("LocationUpdates")) {
-                    bwareFiles.updateData("LocationUpdates", "," + jsonObject);
-                } else {
-                    bwareFiles.saveData("LocationUpdates", String.valueOf(jsonObject));
-                }
-
-                showNotification("Wait for the status to update", "Red Zone Status", Color.rgb(95, 41, 103));
+            public void NearByZoneResponse(boolean success, ArrayList<NearByZoneModel> nearByZoneModels) {
 
             }
-        });
+
+            @Override
+            public void RedZone(boolean success, ArrayList<NearByZoneModel> nearByZoneModels, ArrayList<NearByZoneModel> redZoneLocationModel) {
+
+                if (success) {
+                    for (int i = 0; i < redZoneLocationModel.size(); i++) {
+                        HaversineAlgorithm haversineAlgorithm = new HaversineAlgorithm();
+                        if (haversineAlgorithm.Notify(redZoneLocationModel.get(i).getLocation(), locationM, redZoneLocationModel.get(i).getRadius())) {
+                            showNotification("You're in Red Zone", String.valueOf("Total Red Zone Count : " + redZoneLocationModel.size()), Color.rgb(200, 0, 0));
+                            break;
+                        }
+                    }
+                    if (redZoneLocationModel.size() == 0) {
+                        showNotification("You're Safe Now", String.valueOf("Total Red Zone Count : " + redZoneLocationModel.size()), Color.rgb(0, 200, 0));
+                    }
+                } else {
+                    showNotification("Wait for the status to update", "Red Zone Status", Color.rgb(95, 41, 103));
+                }
+            }
+
+            @Override
+            public void RedZoneResponse(boolean success, String response) {
+                if (success) {
+                    new BwareFiles(LSactivity).saveJSONData("Red Zone", response);
+                }
+            }
+
+            @Override
+            public void DiseaseCount(String state, String district, String place) {
+
+            }
+
+            @Override
+            public void DiseaseClick(String diseaseName, String sDate) {
+
+            }
+        }).getRedZone("activeOutrages");
+
+        if (bwareFiles.getFileLength("LocationUpdates")) {
+            bwareFiles.updateData("LocationUpdates", "," + jsonObject);
+        } else {
+            bwareFiles.saveData("LocationUpdates", String.valueOf(jsonObject));
+        }
+        showNotification("Wait for the status to update", "Red Zone Status", Color.rgb(95, 41, 103));
     }
 
     private void showNotification(String message, String count, int color) {
-        Intent notificationIntent = new Intent(LocationService.this, NotifyMessageActivity.class);
+        Intent notificationIntent = new Intent(LocationService.this, DashBoardActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(LocationService.this,
                 0, notificationIntent, 0);
         Notification notification = new NotificationCompat.Builder(LocationService.this, CHANNEL_ID)

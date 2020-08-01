@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.fiends.bware.Activities.NotifyMessageActivity;
 import com.fiends.bware.Activities.WebReportActivity;
 import com.fiends.bware.Models.NotificationModel;
 import com.fiends.bware.R;
@@ -48,6 +49,10 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                 @Override
                 public void onClick(View v) {
                     updateNotification(position);
+                    Intent intent = new Intent(activity, NotifyMessageActivity.class);
+                    intent.putExtra("TITLE", notificationModels.get(position).getTitle());
+                    intent.putExtra("BODY", notificationModels.get(position).getBody());
+                    activity.startActivity(intent);
                 }
             });
         } else {

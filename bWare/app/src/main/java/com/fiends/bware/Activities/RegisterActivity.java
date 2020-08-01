@@ -35,6 +35,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import im.delight.android.location.SimpleLocation;
+
 
 public class RegisterActivity extends AppCompatActivity implements BwareResponse {
 
@@ -102,21 +104,17 @@ public class RegisterActivity extends AppCompatActivity implements BwareResponse
         sequenceArrayAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
         District.setAdapter(sequenceArrayAdapter);
 
-        getLocation = new GetLocation(RegisterActivity.this, new GetLocation.Response() {
-            @Override
-            public void getLocation(String latitude, String longitude) {
-                JSONArray location = new JSONArray();
-                try {
-                    location.put(longitude);
-                    location.put(latitude);
-                    mainAddress.put("location", location);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
+        SimpleLocation locations = new SimpleLocation(this);
+        JSONArray location = new JSONArray();
+        try {
+            location.put(locations.getLongitude());
+            location.put(locations.getLatitude());
+            mainAddress.put("location", location);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+
         phoneNumber.setText("+91" + telephonyManager.getLine1Number());
 
         State.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -173,6 +171,7 @@ public class RegisterActivity extends AppCompatActivity implements BwareResponse
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                    new BwareFiles(RegisterActivity.this).saveData("Phone Number", number);
                     serverRequest.setUrl(getString(R.string.SendOTP), RegisterActivity.this).sendOTP(jsonObject);
                     progressDialog = ProgressDialog.show(RegisterActivity.this, "", "Please Wait...", true, false);
                 } else {
@@ -258,6 +257,7 @@ public class RegisterActivity extends AppCompatActivity implements BwareResponse
 
             }
         });
+
         Place.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

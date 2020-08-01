@@ -30,6 +30,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import im.delight.android.location.SimpleLocation;
+
 import static com.fiends.bware.Services.LocationService.LSactivity;
 import static com.fiends.bware.Utils.Bware.showAppExitDialog;
 

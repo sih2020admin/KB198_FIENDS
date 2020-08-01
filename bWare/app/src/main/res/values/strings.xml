@@ -57,6 +57,7 @@
     <string name="GetAllDiseases">https://sih-drs-prototype-backend-2.herokuapp.com/api/outrages/diseases/all</string>
     <string name="GetPlaceLevelDiseasesCount">https://sih-drs-prototype-backend-2.herokuapp.com/api/outrages/getDetails/individualCount</string>
     <string name="GetRedZone">https://sih-drs-prototype-backend-2.herokuapp.com/api/appUsers/redZones</string>
-    <string name="ReportLink">https://csb-5952z-bknfnd446.vercel.app/report</string>
+    <string name="ReportLink">https://drsproject-f58fa.web.app/report</string>
+    <string name="version_1_0_0">Version : 1.0.0</string>
 
 </resources>

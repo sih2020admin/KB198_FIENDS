@@ -2,6 +2,7 @@ package com.fiends.bware.Utils;
 
 import android.app.Activity;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -364,6 +365,9 @@ public class ServerRequest {
             @Override
             public void onResponse(String response) {
                 try {
+                    if (response.equals("[]")) {
+                        serverResponse.RedZone(true, nearByZoneModels, redZoneLocationModel);
+                    }
                     Log.i("URLLINK",url);
                     Log.i("URLLINK",response);
                     JSONObject jsonObject = new JSONObject(response);
@@ -394,12 +398,7 @@ public class ServerRequest {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        getRedZone(type);
-                    }
-                }).start();
+                serverResponse.RedZone(false, nearByZoneModels, redZoneLocationModel);
             }
         }){
             @Override

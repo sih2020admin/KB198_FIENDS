@@ -86,7 +86,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/near_by_zone_disease_name"
             app:layout_constraintStart_toEndOf="@+id/near_by_zone_disease_name"
             app:layout_constraintTop_toTopOf="@+id/near_by_zone_disease_name"
-            app:srcCompat="@drawable/unread_notification" />
+            app:srcCompat="@drawable/seen_notification" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

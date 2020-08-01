@@ -25,14 +25,8 @@ public class NotifyMessageActivity extends AppCompatActivity {
         messageTitle = findViewById(R.id.message_title);
         messageBody = findViewById(R.id.message_body);
 
-        try {
-            JSONObject jsonObject = new JSONObject(new BwareFiles(NotifyMessageActivity.this).readData("Notify"));
-            messageBody.setText(jsonObject.getString("description"));
-            messageTitle.setText(jsonObject.getString("title"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
+        messageTitle.setText(getIntent().getExtras().getString("TITLE"));
+        messageBody.setText(getIntent().getExtras().getString("BODY"));
     }
 
     @Override
