@@ -105,7 +105,7 @@ function EditOutrage(props) {
 
   function clickHandler(index) {
     setMorbi(0);
-    setMoti(0); 
+    setMoti(0);
     setCured(0);
     setClickedId(index);
     setClicked(!clicked);
@@ -172,7 +172,7 @@ function EditOutrage(props) {
             >
               <h4 className="m-0">Confirmed</h4>
               <h1 className="m-0">
-                {value.mortalityCount === "" ? 0 : value.mortalityCount}
+                {value.morbidityCount === "" ? 0 : value.morbidityCount}
               </h1>
             </div>
             <div
@@ -188,7 +188,7 @@ function EditOutrage(props) {
             >
               <h4 className="m-0">Deceased</h4>
 
-              <h1 className="m-0">{value.morbidityCount}</h1>
+              <h1 className="m-0">{value.mortalityCount}</h1>
             </div>
           </div>
 

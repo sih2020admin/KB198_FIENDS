@@ -93,9 +93,9 @@ function OptForm(props) {
           );
           console.log("👉 Returned data:", response);
           setSendOtp(true);
-          props.getStatus("success", "OTP Register");
+          props.getStatus("success", "Opt Sent");
         } catch (e) {
-          props.getStatus("error", "OTP Register");
+          props.getStatus("error", "Opt Sent");
           console.log(`😱 Axios request failed: ${e}`);
         }
       }
@@ -117,18 +117,11 @@ function OptForm(props) {
           );
           console.log("👉 Returned data:", response);
           // setSendOtp(false);
-          setOtpDetail({
-            otp: "",
-            phNo: "",
-            state: "",
-            place: "",
-            district: "",
-            location: [78, 12],
-          })
-          props.getId(123);
-          props.getStatus("success", "Otp Sent");
+          // props.getId(123);
+          // props.getStatus("success", "Added");
+          props.getStatus("success", "User Register");
         } catch (e) {
-          props.getStatus("error", "Otp Sent ");
+          props.getStatus("error", "User Register");
           console.log(`😱 Axios request failed: ${e}`);
         }
       }

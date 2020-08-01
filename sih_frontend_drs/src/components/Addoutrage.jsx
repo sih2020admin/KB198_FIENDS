@@ -14,6 +14,10 @@ function Addoutrage(props) {
 
   const officalToken = Authentication.getToken();
 
+  const [showList, setShowList] = useState(false);
+  const [search, setSearch] = useState("");
+
+  const [DiseaseArray, setDiseaseArray] = useState([]);
  
 
   const [outrage, addOutrage] = useState({
@@ -62,6 +66,20 @@ function Addoutrage(props) {
    
   }, [stateName, districturl]);
 
+  const Diseaseurl =
+  "https://sih-drs-prototype-backend-2.herokuapp.com/api/outrages/diseases/all";
+useEffect(() => {
+  
+  try {
+    axios.get(proxyurl + Diseaseurl).then(res => {
+      console.log(res.data);
+      setDiseaseArray(res.data);
+    });
+  } catch (e) {
+    console.log(e);
+  }
+}, []);
+
   function optionList(name, index) {
     return (
       <option value={name} key={index}>
@@ -78,6 +96,11 @@ function Addoutrage(props) {
       setStateName(value);
     }
 
+    if(name==="disease"){
+      value === "" ? setShowList(false) : setShowList(true);
+      setSearch(value);
+    }
+
     addOutrage(prevData => {
       return {
         ...prevData,
@@ -85,8 +108,7 @@ function Addoutrage(props) {
       };
     });
   }
-  // const proxyurl = "https://cors-anywhere.herokuapp.com/";
-
+ 
   async function formHandle(event) {
     event.preventDefault();
     console.log(outrage, officalToken);
@@ -133,16 +155,118 @@ function Addoutrage(props) {
         location: input.location
       };
     });
-
-    // console.log(input);
   }
+
+
+
+  function inputOnChange(event) {
+    const { value } = event.target;
+
+    value === "" ? setShowList(false) : setShowList(true);
+
+    setSearch(value);
+  }
+
+  async function ListHandler(item) {
+    console.log(item)
+    outrage.disease = item;
+    // addOutrage(prevData => {
+    //   return {
+    //     ...prevData,
+    //     [dummy]:item,
+    //     // location: input.location
+    //   };
+    // });
+    // setSearch(item);
+    // const save = await DiseaseName.setDisease(item);
+    // props.getName(item);
+    setShowList(false);
+  }
+
+  
+  function DisplayList(item, index) {
+    return (
+   
+      <div className="AutocompletePlace-items" key={index}>
+        <div
+          className=""
+          onClick={() => {
+            ListHandler(item);
+          }}
+          key={index}
+          value={item}
+        >
+          {" "}
+          {item}{" "}
+        </div>
+      </div>
+
+    );
+  }
+
+
+  function inputOnChange(event) {
+    const { value } = event.target;
+
+    value === "" ? setShowList(false) : setShowList(true);
+
+    setSearch(value);
+  }
+
+  // async function ListHandler(item) {
+  //   console.log(item)
+  //   // setSearch(item);
+  //   // const save = await DiseaseName.setDisease(item);
+  //   // props.getName(item);
+  //   setShowList(false);
+  // }
+
+  // async function SubmitHandler() {
+  //   // const save = await DiseaseName.setDisease(search);
+  //   // props.getName(search);
+  // }
+
+  function DisplayList(item, index) {
+    return (
+   
+      <li className="AutocompletePlace-items" key={index}>
+        <div
+          className="result"
+          onClick={() => {
+            ListHandler(item);
+          }}
+          key={index}
+          value={item}
+        >
+          {" "}
+          {item}{" "}
+        </div>
+      </li>
+    
+    );
+  }
+
+
+
 
   return (
     <div className="my-0 add-outrage p-0">
       <h1 className="outrage-title my-0"> Add Outrage </h1>
       <form className="form-outrage" onSubmit={formHandle}>
         <div className="styled-input">
-          <input
+
+           <input
+              className="sea"
+              name="disease"
+              type="text"
+              placeholder="Enter Disease Name Some"
+              // onClick={inputHandler}
+              onChange={event => handleChange(event)}
+              value={outrage.disease}
+              autoComplete="off"
+            />
+
+          {/* <input
             placeholder="Disease Name"
             name="disease"
             // class="change"
@@ -150,10 +274,17 @@ function Addoutrage(props) {
             type="text"
             value={outrage.disease}
             // autoComplete={props.autoComplete}
-          />
+          /> */}
           {/* <label> Disease Details </label> */}
           <span />
+          {showList &&(
+          <ul className="AutocompletePlace-results">
+          {DiseaseArray.filter(
+            vaule => vaule.toLowerCase().indexOf(search.toLowerCase()) > -1
+          ).map(DisplayList)}</ul>)}
         </div>
+        
+        
         <div className="styled-input">
           {/* {props.label && (
         <label>{props.label}</label>

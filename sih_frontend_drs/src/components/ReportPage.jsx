@@ -8,6 +8,9 @@ import Chart from "./Chart";
 import { useParams, Route } from "react-router-dom";
 import DiseaseReport from "./DiseaseReport";
 
+const ans=0;
+const expo=0;
+
 function ReportPage(props) {
   var todayDate = new Date().toISOString().slice(0, 10);
   const [stateArray, setStateArray] = useState([]);
@@ -109,6 +112,18 @@ function ReportPage(props) {
       setnavDisease(value);
     }
   }
+
+//  async function calcCount(count,info){
+//     const i=0;
+//    while(count<1){
+//       count=count*10;
+//       i++;
+//     }
+    
+//   //  ans=count;
+//   //  expo=i;
+//    return "<p>"+i+"/"+Math.pow(count,i)+"have"+info+". </p>"
+//   }
 
   const districturl =
     "https://sih-drs-prototype-backend-2.herokuapp.com/api/getLocationDetails/" +

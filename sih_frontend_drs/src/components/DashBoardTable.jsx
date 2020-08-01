@@ -105,7 +105,7 @@ function DashBoardTable(props) {
                 >
                   <h5>Active</h5>
              
-                  <h1>{totalCount.confrim-totalCount.recovery-totalCount.death}</h1>
+                  <h1>{(totalCount.confrim)-(totalCount.recovery)-(totalCount.death)}</h1>
                 </div>
                 <div
                   className="level-item is-recovered fadeInUp"

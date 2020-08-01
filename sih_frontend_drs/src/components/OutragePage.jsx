@@ -82,6 +82,9 @@ function OutragePage() {
               class="close"
               data-dismiss="alert"
               aria-label="Close"
+              onClick={()=>{
+                setStatus(false)
+              }}
             >
               <span aria-hidden="true">&times;</span>
             </button>
@@ -98,6 +101,9 @@ function OutragePage() {
               class="close"
               data-dismiss="alert"
               aria-label="Close"
+              onClick={()=>{
+                setStatus(false)
+              }}
             >
               <span aria-hidden="true">&times;</span>
             </button>

@@ -68,7 +68,7 @@ function DeleteOutrage(props) {
     } catch (e) {
       props.getStatus("error", "Outrage Deleted");
       console.log(`😱 Axios request failed: ${e}`);
-    } 
+    }
   }
 
   async function SubmitHandle() {

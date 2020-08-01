@@ -97,13 +97,6 @@ function AddRedZone(props){
       
       props.getId(123);
       props.getStatus("success", "RedZone Added");
-      addRedZone({maxAllowedPopulation: "",
-      alertPhNo: "",
-      state: "",
-      place: "",
-      district: "",
-      alertRadius: "",
-      location: [78, 12]})
     } catch (e) {
       props.getStatus("error", "RedZone Added");
       console.log(`😱 Axios request failed: ${e}`);

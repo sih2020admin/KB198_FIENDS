@@ -141,16 +141,17 @@ function OutrageMap(props) {
                 {/* <p className="text-capitalize">{item.description}</p> */}
                 <div className="info d-flex justify-content-center">
                   <div className="d-row active mx-2">
-                    <p className="m-0">
-                      {selected.curedCount === "" ? 0 : selected.curedCount}
-                    </p>
-                    <p className="m-0">Active</p>
-                  </div>
-                  <div className="d-row recovery mx-2">
-                    <p className="m-0">
+                  <p className="m-0">
                       {selected.morbidityCount === ""
                         ? 0
                         : selected.morbidityCount}{" "}
+                    </p>
+                    <p className="m-0">Confrimed</p>
+                  </div>
+                  <div className="d-row recovery mx-2">
+                   
+                    <p className="m-0">
+                      {selected.curedCount === "" ? 0 : selected.curedCount}
                     </p>
                     <p className="m-0">Recovery</p>
                   </div>

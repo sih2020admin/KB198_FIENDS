@@ -1,5 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
+import DiseaseName from "../service/util";
 // import ReactMapGL, {
 //   FlyToInterpolator,
 //   Marker,
@@ -49,19 +50,30 @@ function Map(props) {
   const [locationArray, setLocationArray] = useState([]);
 
   const [selected, setSelected] = useState(null);
+  var todayDate = new Date().toISOString().slice(0, 10);
+
+  const [diseaseName , setDiseaseName] = useState(props.disease);
+
+  useEffect(()=>{
+    if(diseaseName === ""){
+      if(DiseaseName.getDisease() !== ""){
+        setDiseaseName(DiseaseName.getDisease())
+      }
+    }
+  },[])
+
 
   useEffect(() => {
     // console.log("mapdis " + DiseaseName.getDisease());
 
-    // if (props.disease !== "") {
+
+
+    if (props.disease !== "") {
     const proxyurl = "https://cors-anywhere.herokuapp.com/";
     const url =
       "https://sih-drs-prototype-backend-2.herokuapp.com/api/outrages/getDetails/" +
       props.disease +
-      "/2020-07-14/2020-07-30";
-    // console.log("site");
-
-    if (props.disease !== "") {
+      "/2020-07-14/"+todayDate;
       try {
         axios.get(proxyurl + url).then(res => {
           // setOutrage(res.data);
@@ -72,6 +84,27 @@ function Map(props) {
       } catch (err) {
         console.log(err);
       }
+    // console.log("site");
+  }else{
+    const proxyurl = "https://cors-anywhere.herokuapp.com/";
+    const url =
+      "https://sih-drs-prototype-backend-2.herokuapp.com/api/outrages/getDetails/" +
+      DiseaseName.getDisease() +
+      "/2020-07-14/"+todayDate;
+      try {
+        axios.get(proxyurl + url).then(res => {
+          // setOutrage(res.data);
+          setLocationArray(res.data);
+          // console.log(res.data);
+          // SetIsLoad(false);
+        });
+      } catch (err) {
+        console.log(err);
+      }
+  }
+
+    if (props.disease !== "") {
+      
     }
 
     // }
@@ -87,7 +120,7 @@ function Map(props) {
       // }),
       // transitionDuration: "auto"
     });
-  }, [props.lon, props.lat, props.disease, props.zoom, props.markerLoc]);
+  }, [props.lon, props.lat, props.zoom, props.markerLoc,diseaseName,props.disease]);
 
   function changeMap(nextViewport) {
     setViewport(nextViewport);
@@ -176,16 +209,17 @@ function Map(props) {
                 {/* <p className="text-capitalize">{item.description}</p> */}
                 <div className="info d-flex justify-content-center">
                   <div className="d-row active mx-2">
-                    <p className="m-0">
-                      {selected.curedCount === "" ? 0 : selected.curedCount}
-                    </p>
-                    <p className="m-0">Active</p>
-                  </div>
-                  <div className="d-row recovery mx-2">
-                    <p className="m-0">
+                  <p className="m-0">
                       {selected.morbidityCount === ""
                         ? 0
                         : selected.morbidityCount}{" "}
+                    </p>
+                    <p className="m-0">Confrimed</p>
+                  </div>
+                  <div className="d-row recovery mx-2">
+                   
+                    <p className="m-0">
+                      {selected.curedCount === "" ? 0 : selected.curedCount}
                     </p>
                     <p className="m-0">Recovery</p>
                   </div>
