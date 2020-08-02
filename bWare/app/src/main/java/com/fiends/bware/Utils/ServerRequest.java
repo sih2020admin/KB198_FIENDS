@@ -2,7 +2,6 @@ package com.fiends.bware.Utils;
 
 import android.app.Activity;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -15,9 +14,6 @@ import com.android.volley.toolbox.Volley;
 import com.fiends.bware.Models.NearByZoneModel;
 import com.fiends.bware.Overrides.BwareResponse;
 import com.fiends.bware.Overrides.ServerResponse;
-import com.fiends.bware.R;
-import com.fiends.bware.ui.HomeFragment;
-import com.mapbox.mapboxsdk.maps.MapboxMap;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -170,8 +166,13 @@ public class ServerRequest {
                 BwareFiles files = new BwareFiles(activity);
                 HashMap<String, String> headers = new HashMap<String, String>();
                 headers.put("Content-Type", "application/json; charset=utf-8");
-                Log.i("TOKEN",files.readData("Temp"));
-                headers.put("x-user-token",files.readData("Temp"));
+                String token;
+                if (files.readData("Temp").isEmpty()) {
+                    token = files.readData("User Token");
+                } else {
+                    token = files.readData("Temp");
+                }
+                headers.put("x-user-token",token);
                 return headers;
             }
         };
@@ -313,6 +314,7 @@ public class ServerRequest {
     public ServerRequest getNearByOutrages() {
 
         final ArrayList<NearByZoneModel> nearByZoneModels = new ArrayList<>();
+        final ArrayList<NearByZoneModel> redZoneLocationModel = new ArrayList<>();
         RequestQueue queue = Volley.newRequestQueue(activity.getApplicationContext());
         final StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
@@ -325,13 +327,21 @@ public class ServerRequest {
                     for (int i=0; i<jsonArray.length(); i++) {
                         JSONObject jsonObject1 = new JSONObject(jsonArray.get(i).toString());
                         JSONObject object = new JSONObject(jsonObject1.getString("properties"));
+                        JSONObject geometry = new JSONObject(jsonObject1.getString("geometry"));
+                        JSONArray coordinates = new JSONArray(geometry.getString("coordinates"));
                         nearByZoneModels.add(new NearByZoneModel(
                                 object.getString("disease"),
                                 object.getString("description"),
                                 Bware.getDate(object.getString("startDate")),
                                 object.getString("distance")));
-                        serverResponse.NearByZoneResponse(true, nearByZoneModels);
+                        redZoneLocationModel.add(new NearByZoneModel(
+                                "[" + coordinates.get(0).toString() + ", " + coordinates.get(1).toString() + "]",
+                                object.getString("alertRadius"),
+                                Boolean.parseBoolean(object.getString("isRedZone"))
+                        ));
                     }
+                    serverResponse.NearByZoneResponse(true, nearByZoneModels);
+                    serverResponse.MapResponse(true, redZoneLocationModel);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -339,7 +349,7 @@ public class ServerRequest {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                serverResponse.NearByZoneResponse(false,null);
+
             }
         }){
             @Override
@@ -367,30 +377,29 @@ public class ServerRequest {
                 try {
                     if (response.equals("[]")) {
                         serverResponse.RedZone(true, nearByZoneModels, redZoneLocationModel);
+                    } else {
+                        Log.i("URLLINK",url);
+                        Log.i("URLLINK",response);
+                        JSONObject jsonObject = new JSONObject(response);
+                        JSONObject previousOutrages = new JSONObject(jsonObject.getString(type));
+                        JSONArray jsonArray = new JSONArray(previousOutrages.getString("features"));
+                        for (int i=0; i<jsonArray.length(); i++) {
+                            JSONObject jsonObject1 = new JSONObject(jsonArray.get(i).toString());
+                            JSONObject object = new JSONObject(jsonObject1.getString("properties"));
+                            JSONObject geometry = new JSONObject(jsonObject1.getString("geometry"));
+                            JSONArray coordinates = new JSONArray(geometry.getString("coordinates"));
+                            nearByZoneModels.add(new NearByZoneModel(
+                                    object.getString("disease"),
+                                    object.getString("description"),
+                                    object.getString("startDate"),
+                                    object.getString("distance")));
+                            redZoneLocationModel.add(new NearByZoneModel(
+                                    "[" + coordinates.get(0).toString() + ", " + coordinates.get(1).toString() + "]",
+                                    object.getString("alertRadius")
+                            ));
+                        }
+                        serverResponse.RedZone(true, nearByZoneModels, redZoneLocationModel);
                     }
-                    Log.i("URLLINK",url);
-                    Log.i("URLLINK",response);
-                    JSONObject jsonObject = new JSONObject(response);
-                    JSONObject previousOutrages = new JSONObject(jsonObject.getString(type));
-                    JSONArray jsonArray = new JSONArray(previousOutrages.getString("features"));
-                    for (int i=0; i<jsonArray.length(); i++) {
-                        JSONObject jsonObject1 = new JSONObject(jsonArray.get(i).toString());
-                        JSONObject object = new JSONObject(jsonObject1.getString("properties"));
-                        JSONObject geometry = new JSONObject(jsonObject1.getString("geometry"));
-                        JSONArray coordinates = new JSONArray(geometry.getString("coordinates"));
-                        nearByZoneModels.add(new NearByZoneModel(
-                                object.getString("disease"),
-                                object.getString("description"),
-                                object.getString("startDate"),
-                                object.getString("distance")));
-
-                        redZoneLocationModel.add(new NearByZoneModel(
-                                "[" + coordinates.get(0).toString() + ", " + coordinates.get(1).toString() + "]",
-                                object.getString("alertRadius")
-                        ));
-                    }
-                    serverResponse.RedZone(true, nearByZoneModels, redZoneLocationModel);
-                    serverResponse.RedZoneResponse(true, previousOutrages.toString());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

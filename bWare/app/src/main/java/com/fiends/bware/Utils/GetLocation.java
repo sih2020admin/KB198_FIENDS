@@ -11,7 +11,10 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.widget.Toast;
+
+import im.delight.android.location.SimpleLocation;
 
 
 public class GetLocation implements LocationListener {
@@ -61,7 +64,13 @@ public class GetLocation implements LocationListener {
         String provider = locationManager.getBestProvider(criteria, false);
         location = locationManager.getLastKnownLocation(provider);
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
-        onLocationChanged(location);
+        if (location == null) {
+            SimpleLocation simpleLocation = new SimpleLocation(activity);
+            Log.i("NITH_AS",simpleLocation.getLatitude() + "");
+            response.getLocation(String.valueOf(simpleLocation.getLatitude()), String.valueOf(simpleLocation.getLongitude()));
+        } else {
+            onLocationChanged(location);
+        }
         locationManager.removeUpdates(this);
     }
     //  [77.2115047, 8.2157735]
