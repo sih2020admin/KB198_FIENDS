@@ -5,6 +5,7 @@ import DiseaseSearch from "./DiseaseSearch";
 import DashBoard from "./DashBoard";
 import OutragePage from "./OutragePage";
 import ReportPage from "./ReportPage";
+import SymptomsPage from "./SymptomsPage";
 import {
   BrowserRouter as Router,
   Switch,
@@ -76,6 +77,9 @@ function StartFile() {
         </Route>
         <Route path="/login">
           <LoginPage setToken={setToken} isAuth={setAuth} />
+        </Route>
+        <Route path="/symptoms">
+          <SymptomsPage />
         </Route>
       </Switch>
     </Router>

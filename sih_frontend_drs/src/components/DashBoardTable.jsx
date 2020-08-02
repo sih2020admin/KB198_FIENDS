@@ -3,6 +3,7 @@ import DiseaseName from "../service/util";
 import axios from "axios";
 import Table from "./Table";
 import SearchBar from "./SearchBar";
+import AreaAutoComplete from "./AreaAutoComplete"
 
 function DashBoardTable(props) {
   const [statelevel, setStateLevel] = useState([]);
@@ -81,7 +82,9 @@ function DashBoardTable(props) {
   return (
     <div className="container-fluid">
       <div className="row">
+      
         <div className="col-md-12">
+         
           <SearchBar getName={managestate} />
           {isLoad && (
             <div id="spinner" className="loader-container">
