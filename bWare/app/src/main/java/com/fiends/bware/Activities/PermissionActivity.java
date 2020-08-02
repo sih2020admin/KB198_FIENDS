@@ -14,6 +14,8 @@ import com.fiends.bware.R;
 import com.fiends.bware.Utils.Bware;
 import com.fiends.bware.Utils.BwareFiles;
 
+import static com.fiends.bware.Utils.Bware.showAppExitDialog;
+
 public class PermissionActivity extends AppCompatActivity {
 
     private Button appPermission;
@@ -62,6 +64,11 @@ public class PermissionActivity extends AppCompatActivity {
 
     private boolean isLoggedIn() {
         return new BwareFiles(PermissionActivity.this).getFileLength("User Token");
+    }
+
+    @Override
+    public void onBackPressed() {
+        showAppExitDialog(PermissionActivity.this);
     }
 
 }

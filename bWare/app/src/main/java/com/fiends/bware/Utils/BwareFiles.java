@@ -16,6 +16,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class BwareFiles {
 
@@ -183,6 +184,15 @@ public class BwareFiles {
         mainData.replaceAll("\\[","");
         mainData.replaceAll("\\]","");
         saveJSONData("Notification", mainData);
+    }
+
+    public BwareFiles deleteFiles(ArrayList<String> filename) {
+
+        for (int i=0; i<filename.size(); i++) {
+            path = new File(activity.getExternalFilesDir("/").toString(), "Data/" + filename.get(i));
+            path.delete();
+        }
+        return this;
     }
 
 }

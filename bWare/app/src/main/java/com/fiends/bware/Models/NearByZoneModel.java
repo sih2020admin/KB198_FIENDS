@@ -9,6 +9,8 @@ public class NearByZoneModel {
     private String location;
     private String radius;
 
+    private Boolean isRedZone;
+
     public NearByZoneModel(String diseaseName, String diseaseDiscription, String startDate, String distance) {
         this.diseaseName = diseaseName;
         this.diseaseDiscription = diseaseDiscription;
@@ -19,6 +21,20 @@ public class NearByZoneModel {
     public NearByZoneModel(String location, String radius) {
         this.location = location;
         this.radius = radius;
+    }
+
+    public NearByZoneModel(String location, String radius, Boolean isRedZone) {
+        this.location = location;
+        this.radius = radius;
+        this.isRedZone = isRedZone;
+    }
+
+    public Boolean getRedZone() {
+        return isRedZone;
+    }
+
+    public void setRedZone(Boolean redZone) {
+        isRedZone = redZone;
     }
 
     public String getLocation() {

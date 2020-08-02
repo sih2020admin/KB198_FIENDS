@@ -12,6 +12,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.location.LocationManager;
 import android.os.Build;
+import android.provider.SyncStateContract;
 import android.util.Log;
 import android.widget.ProgressBar;
 
@@ -19,7 +20,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 
+import com.fiends.bware.Activities.RegisterActivity;
+import com.fiends.bware.Activities.SplashActivity;
 import com.fiends.bware.R;
+import com.fiends.bware.Services.LocationService;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.Result;
@@ -266,6 +270,37 @@ public class Bware {
                 intent.addCategory(Intent.CATEGORY_HOME);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 activity.startActivity(intent);
+                activity.finish();
+            }
+        });
+
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    public static final void showLogOutDialog(Activity activity, ArrayList<String> strings) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setTitle("Please confirm");
+        builder.setMessage("Do you want to Logout from the app?");
+        builder.setCancelable(true);
+
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+                new BwareFiles(activity).deleteFiles(strings);
+                Intent stopIntent = new Intent(activity, LocationService.class);
+                stopIntent.setAction(LocationService.ACTION_STOP_LOCATION_SERVICE);
+                activity.stopService(stopIntent);
+                activity.startActivity(new Intent(activity, RegisterActivity.class));
                 activity.finish();
             }
         });

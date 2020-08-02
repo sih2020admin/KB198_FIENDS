@@ -1,13 +1,16 @@
 package com.fiends.bware.ui;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
@@ -22,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager.widget.ViewPager;
 
+import com.fiends.bware.Activities.MapViewActivity;
 import com.fiends.bware.Adapters.InActiveZoneAdapter;
 import com.fiends.bware.Adapters.NearByZoneAdapter;
 import com.fiends.bware.Models.NearByZoneModel;
@@ -30,31 +34,18 @@ import com.fiends.bware.R;
 import com.fiends.bware.Utils.BwareFiles;
 import com.fiends.bware.Utils.GetLocation;
 import com.fiends.bware.Utils.ServerRequest;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMapOptions;
+import com.google.android.gms.maps.LocationSource;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.tabs.TabLayout;
-import com.mapbox.android.core.permissions.PermissionsListener;
-import com.mapbox.android.core.permissions.PermissionsManager;
-import com.mapbox.geojson.LineString;
-import com.mapbox.geojson.Point;
-import com.mapbox.geojson.Polygon;
-import com.mapbox.mapboxsdk.Mapbox;
-import com.mapbox.mapboxsdk.camera.CameraPosition;
-import com.mapbox.mapboxsdk.geometry.LatLng;
-import com.mapbox.mapboxsdk.location.LocationComponent;
-import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions;
-import com.mapbox.mapboxsdk.location.modes.CameraMode;
-import com.mapbox.mapboxsdk.location.modes.RenderMode;
-import com.mapbox.mapboxsdk.maps.MapboxMap;
-import com.mapbox.mapboxsdk.maps.MapboxMapOptions;
-import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
-import com.mapbox.mapboxsdk.maps.Style;
-import com.mapbox.mapboxsdk.maps.SupportMapFragment;
-import com.mapbox.mapboxsdk.style.layers.CircleLayer;
-import com.mapbox.mapboxsdk.style.layers.FillLayer;
-import com.mapbox.mapboxsdk.style.layers.HeatmapLayer;
-import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
-import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
-import com.mapbox.turf.TurfMeta;
-import com.mapbox.turf.TurfTransformation;
 import com.scwang.wave.MultiWaveHeader;
 
 import org.json.JSONArray;
@@ -65,41 +56,13 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 import im.delight.android.location.SimpleLocation;
 import io.supercharge.shimmerlayout.ShimmerLayout;
-import timber.log.Timber;
 
-import static com.fiends.bware.Utils.Bware.CIRCLE_LAYER_ID;
-import static com.fiends.bware.Utils.Bware.RED_ZONE_LAYER_ID;
-import static com.fiends.bware.Utils.Bware.RED_ZONE_LAYER_SOURCE;
-import static com.fiends.bware.Utils.Bware.RED_ZONE_SOURCE_ID;
 import static com.fiends.bware.Utils.Bware.setProgressColour;
-import static com.mapbox.mapboxsdk.style.expressions.Expression.get;
-import static com.mapbox.mapboxsdk.style.expressions.Expression.heatmapDensity;
-import static com.mapbox.mapboxsdk.style.expressions.Expression.interpolate;
-import static com.mapbox.mapboxsdk.style.expressions.Expression.linear;
-import static com.mapbox.mapboxsdk.style.expressions.Expression.literal;
-import static com.mapbox.mapboxsdk.style.expressions.Expression.rgb;
-import static com.mapbox.mapboxsdk.style.expressions.Expression.rgba;
-import static com.mapbox.mapboxsdk.style.expressions.Expression.stop;
-import static com.mapbox.mapboxsdk.style.expressions.Expression.zoom;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.circleColor;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.circleOpacity;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.circleRadius;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.circleStrokeColor;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.circleStrokeWidth;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.fillColor;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.fillOpacity;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.heatmapColor;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.heatmapIntensity;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.heatmapOpacity;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.heatmapRadius;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.heatmapWeight;
-import static com.mapbox.turf.TurfConstants.UNIT_KILOMETERS;
 
-public class HomeFragment extends Fragment implements ServerResponse, OnMapReadyCallback, PermissionsListener {
+public class HomeFragment extends Fragment implements ServerResponse, OnMapReadyCallback {
 
     private TabLayout LocationRadius;
     private TabLayout nearByZonePagerIndicator;
@@ -118,13 +81,12 @@ public class HomeFragment extends Fragment implements ServerResponse, OnMapReady
     private TextView stateDisease;
     private TextView districtDisease;
     private TextView placeDisease;
-    private PermissionsManager permissionsManager;
-    private LocationComponent locationComponent;
+    private ImageView FullMap;
 
     private ProgressBar stateDiseaseProgress;
     private ProgressBar districtDiseaseProgress;
     private ProgressBar placeDiseaseProgress;
-    private MapboxMap mapboxMap;
+    private GoogleMap mMap;
 
     private MultiWaveHeader multiWaveHeader;
     private TextView appName;
@@ -136,22 +98,12 @@ public class HomeFragment extends Fragment implements ServerResponse, OnMapReady
     private ShimmerLayout sliderShimmer;
     private ShimmerLayout outrageShimmer;
 
-//    private static final String TAG = "FilterActivity";
-//    private static final String TURF_CALCULATION_FILL_LAYER_GEOJSON_SOURCE_ID
-//            = "TURF_CALCULATION_FILL_LAYER_GEOJSON_SOURCE_ID";
-//    private static final String TURF_CALCULATION_FILL_LAYER_ID = "TURF_CALCULATION_FILL_LAYER_ID";
-//    private static final int RADIUS_SEEKBAR_DIFFERENCE = 1;
-//    private static final int RADIUS_SEEKBAR_MAX = 10;
-//    private static final Point DOWNTOWN_MUNICH_START_LOCATION =
-//            Point.fromLngLat(11.5753822, 48.1371079);
-//    private Point lastClickPoint;
-//    private int circleRadius = RADIUS_SEEKBAR_MAX / 2;
-//    private TextView circleRadiusTextView;
+    private View NoRedZone;
+    private View NearByZone;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        Mapbox.getInstance(getContext(), getString(R.string.access_token));
         final View root = inflater.inflate(R.layout.fragment_home, container, false);
 
         LocationRadius = root.findViewById(R.id.location_radius);
@@ -175,12 +127,22 @@ public class HomeFragment extends Fragment implements ServerResponse, OnMapReady
         sliderShimmer = root.findViewById(R.id.slider_shimmer);
         outrageShimmer = root.findViewById(R.id.outrage_shimmer);
         refreshLayout = root.findViewById(R.id.scrollRefresh);
+        FullMap = root.findViewById(R.id.full_map_screen);
+        NoRedZone = root.findViewById(R.id.no_red_zone_layer);
+        NearByZone = root.findViewById(R.id.no_near_by_zone);
+
         sliderShimmer.startShimmerAnimation();
         sliderShimmer.setShimmerAnimationDuration(2000);
         outrageShimmer.setShimmerAnimationDuration(1000);
         outrageShimmer.startShimmerAnimation();
         refreshLayout.setRefreshing(true);
 
+        FullMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), MapViewActivity.class));
+            }
+        });
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -261,36 +223,37 @@ public class HomeFragment extends Fragment implements ServerResponse, OnMapReady
     }
 
     private void initMap(Bundle savedInstanceState) {
-        SupportMapFragment mapFragment;
-        if (savedInstanceState == null) {
 
+        SupportMapFragment mapFragment = SupportMapFragment.newInstance();
+        if (savedInstanceState == null) {
             final FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-            MapboxMapOptions options = MapboxMapOptions.createFromAttributes(getContext(), null);
-            SimpleLocation location = new SimpleLocation(getContext());
-                    options.camera(new CameraPosition.Builder()
-                            .target(new LatLng(location.getLatitude(), location.getLongitude()))
-                            .zoom(12)
-                            .build());
-            mapFragment = SupportMapFragment.newInstance(options);
-            transaction.add(R.id.mapContainer, mapFragment, "com.mapbox.map");
+            transaction.add(R.id.map, mapFragment);
             transaction.commit();
         } else {
-            mapFragment = (SupportMapFragment) getActivity().getSupportFragmentManager().findFragmentByTag("com.mapbox.map");
+            mapFragment = (SupportMapFragment) getActivity().getSupportFragmentManager()
+                    .findFragmentById(R.id.map);
         }
+
         if (mapFragment != null) {
-            mapFragment.getMapAsync(HomeFragment.this);
+            mapFragment.getMapAsync(this);
         }
     }
 
     private void updateStatus(final String distance) {
 
-        SimpleLocation location = new SimpleLocation(getContext(), true);
+        SimpleLocation location = new SimpleLocation(getContext());
         String locations = "[" + location.getLongitude() + ", " + location.getLatitude() + "]";
         nearByZonePager.removeAllViews();
         sliderShimmer.setVisibility(View.VISIBLE);
         sliderShimmer.startShimmerAnimation();
+        new GetLocation(getActivity(), new GetLocation.Response() {
+            @Override
+            public void getLocation(String latitude, String longitude) {
+                String location = "[" + longitude + ", " + latitude + "]";
+                initRedZone(location, "activeOutrages");
+            }
+        });
         initZoneSlider(distance, locations);
-        initRedZone(locations, "activeOutrages");
 
     }
 
@@ -370,9 +333,11 @@ public class HomeFragment extends Fragment implements ServerResponse, OnMapReady
         if (success) {
             sliderShimmer.stopShimmerAnimation();
             sliderShimmer.setVisibility(View.INVISIBLE);
+            NearByZone.setVisibility(View.INVISIBLE);
             initNearByZoneSlider(nearByZoneModels);
         } else {
             nearByZonePager.removeAllViews();
+            NearByZone.setVisibility(View.VISIBLE);
             Toast.makeText(getActivity(), "Failed to load.", Toast.LENGTH_SHORT).show();
         }
     }
@@ -380,111 +345,81 @@ public class HomeFragment extends Fragment implements ServerResponse, OnMapReady
     @Override
     public void RedZone(boolean success, ArrayList<NearByZoneModel> nearByZoneModels, ArrayList<NearByZoneModel> redZoneLocationModel) {
         if (success) {
-            if (nearByZoneModels.size() == 0 && redZoneLocationModel.size() == 0) {
-                outrageShimmer.setVisibility(View.VISIBLE);
-                outrageShimmer.startShimmerAnimation();
+            if (nearByZoneModels.size() == 0) {
+                NoRedZone.setVisibility(View.VISIBLE);
             } else {
                 outrageShimmer.stopShimmerAnimation();
                 outrageShimmer.setVisibility(View.INVISIBLE);
+                NoRedZone.setVisibility(View.INVISIBLE);
             }
             initRedZone(nearByZoneModels);
-//            setUpMapLayer(redZoneLocationModel);
         } else {
             inActiveOutrageRecyclerView.removeAllViews();
             Toast.makeText(getActivity(), "Failed to load.", Toast.LENGTH_SHORT).show();
         }
     }
 
-    @Override
-    public void RedZoneResponse(boolean success, String response) {
-        if (success) {
-            mapboxMap.getStyle(new Style.OnStyleLoaded() {
-                @Override
-                public void onStyleLoaded(@NonNull Style style) {
+    @SuppressLint("MissingPermission")
+    private void setUpMapLayer(ArrayList<NearByZoneModel> redZoneLocationModel) {
 
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            style.removeLayer(RED_ZONE_LAYER_ID);
-                            style.removeLayer(RED_ZONE_LAYER_SOURCE);
-                            style.removeLayer(CIRCLE_LAYER_ID);
-                            style.removeSource(RED_ZONE_SOURCE_ID);
-                            addEarthquakeSource(style);
-                            addHeatmapLayer(style);
-                            addCircleLayer(style);
-                            enableLocationComponent(style);
-                        }
-                    }, 2000);
-                }
-            });
+        mMap.clear();
+        mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getContext(), R.raw.dark_map));
+        int StrokeColor = Color.argb(100, 255, 0, 0);
+        int FillColor = Color.argb(30, 255, 100, 0);
+        for (int i = 0; i < redZoneLocationModel.size(); i++) {
+            if (redZoneLocationModel.get(i).getRedZone()) {
+                FillColor = Color.argb(30, 255, 0, 0);
+            }
+            try {
+                JSONArray jsonArray = new JSONArray(redZoneLocationModel.get(i).getLocation());
+                mMap.addCircle(new CircleOptions()
+                        .center(new LatLng(Double.parseDouble(jsonArray.get(1).toString()), Double.parseDouble(jsonArray.get(0).toString())))
+                        .radius(Integer.parseInt(redZoneLocationModel.get(i).getRadius()))
+                        .strokeWidth(2)
+                        .strokeColor(StrokeColor)
+                        .fillColor(FillColor)
+                        .clickable(true))
+                        .setTag(redZoneLocationModel.get(i).getRadius());
+                mMap.addCircle(new CircleOptions()
+                        .center(new LatLng(Double.parseDouble(jsonArray.get(1).toString()), Double.parseDouble(jsonArray.get(0).toString())))
+                        .radius(Integer.parseInt(redZoneLocationModel.get(i).getRadius())/20)
+                        .strokeWidth(1)
+                        .fillColor(Color.RED));
+                mMap.setOnCircleClickListener(new GoogleMap.OnCircleClickListener() {
+                    @Override
+                    public void onCircleClick(Circle circle) {
+                        mMap.addMarker(
+                                new MarkerOptions()
+                                        .alpha(0.0f)
+                                        .position(circle.getCenter())
+                                        .title("Radius : " + circle.getTag().toString())
+                                        .snippet("Latitude: " + circle.getCenter().latitude + "    Longitude : " + circle.getCenter().longitude))
+                                .showInfoWindow();
+
+                    }
+                });
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
+
+        SimpleLocation location = new SimpleLocation(getActivity());
+        mMap.setMyLocationEnabled(true);
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 14.0f));
     }
 
+    @Override
+    public void MapResponse(boolean success, ArrayList<NearByZoneModel> redZoneLocationModel) {
+        setUpMapLayer(redZoneLocationModel);
+    }
 
-//
-//    private void setUpMapLayer(ArrayList<NearByZoneModel> redZoneLocationModel) {
-//
-//        initPolygonCircleFillLayer();
-//        ArrayList<Double> latitude = new ArrayList<>();
-//        ArrayList<Double> longitude = new ArrayList<>();
-//
-//        for (int i=0; i<redZoneLocationModel.size(); i++) {
-//            try {
-//                JSONArray jsonArray = new JSONArray(redZoneLocationModel.get(i).getLocation());
-//                longitude.add(Double.parseDouble(jsonArray.get(0).toString()));
-//                latitude.add(Double.parseDouble(jsonArray.get(1).toString()));
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//
-//        for (int i=0; i<latitude.size(); i++) {
-//            lastClickPoint = Point.fromLngLat(longitude.get(i), latitude.get(i));
-//            drawPolygonCircle(lastClickPoint);
-//        }
-//    }
-//
-//    private void initPolygonCircleFillLayer() {
-//        mapboxMap.getStyle(new Style.OnStyleLoaded() {
-//            @Override
-//            public void onStyleLoaded(@NonNull Style style) {
-//
-//                FillLayer fillLayer = new FillLayer(TURF_CALCULATION_FILL_LAYER_ID,
-//                        TURF_CALCULATION_FILL_LAYER_GEOJSON_SOURCE_ID);
-//                fillLayer.setProperties(
-//                        fillColor(Color.parseColor("#f5425d")),
-//                        fillOpacity(.5f));
-//                style.addLayerBelow(fillLayer, "poi-label");
-//            }
-//        });
-//    }
-//
-//    private void drawPolygonCircle(Point circleCenter) {
-//        mapboxMap.getStyle(new Style.OnStyleLoaded() {
-//            @Override
-//            public void onStyleLoaded(@NonNull Style style) {
-//
-//                Polygon polygonArea = getTurfPolygon(circleCenter, circleRadius, UNIT_KILOMETERS);
-//                List<Point> pointList = TurfMeta.coordAll(polygonArea, false);
-//                GeoJsonSource polygonCircleSource = style.getSourceAs(TURF_CALCULATION_FILL_LAYER_GEOJSON_SOURCE_ID);
-//                if (polygonCircleSource != null) {
-//                    polygonCircleSource.setGeoJson(Polygon.fromOuterInner(
-//                            LineString.fromLngLats(pointList)));
-//                }
-//                List<LatLng> latLngList = new ArrayList<>(pointList.size());
-//                for (Point singlePoint : pointList) {
-//                    latLngList.add(new LatLng((singlePoint.latitude()), singlePoint.longitude()));
-//                }
-//
-//            }
-//        });
-//    }
-//
-//    private Polygon getTurfPolygon(@NonNull Point centerPoint, double radius,
-//                                   @NonNull String units) {
-//        return TurfTransformation.circle(centerPoint, radius / 10, 360, units);
-//    }
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
 
+        mMap = googleMap;
+        mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getContext(), R.raw.dark_map));
+
+    }
 
     @SuppressLint("NewApi")
     @Override
@@ -527,150 +462,6 @@ public class HomeFragment extends Fragment implements ServerResponse, OnMapReady
                         "/" + toDate.getText().toString(), HomeFragment.this).getDiseasesCount();
             }
         }).start();
-
-    }
-
-    @Override
-    public void onMapReady(@NonNull MapboxMap mapboxMap) {
-        this.mapboxMap = mapboxMap;
-        mapboxMap.setStyle(Style.DARK);
-    }
-
-    private void addEarthquakeSource(@NonNull Style loadedMapStyle) {
-        try {
-            loadedMapStyle.addSource(new GeoJsonSource(RED_ZONE_SOURCE_ID, new URI(new BwareFiles(getActivity()).getFileUri("Red Zone","json"))));
-        } catch (URISyntaxException uriSyntaxException) {
-            Timber.e(uriSyntaxException, "That's not an url... ");
-        }
-    }
-
-    private void addHeatmapLayer(@NonNull Style loadedMapStyle) {
-        HeatmapLayer layer = new HeatmapLayer(RED_ZONE_LAYER_ID, RED_ZONE_SOURCE_ID);
-        layer.setMaxZoom(9);
-        layer.setSourceLayer(RED_ZONE_LAYER_SOURCE);
-        layer.setProperties(
-
-                heatmapColor(
-                        interpolate(
-                                linear(), heatmapDensity(),
-                                literal(0), rgba(33, 102, 172, 0),
-                                literal(0.2), rgb(103, 169, 207),
-                                literal(0.4), rgb(209, 229, 240),
-                                literal(0.6), rgb(253, 219, 199),
-                                literal(0.8), rgb(239, 138, 98),
-                                literal(1), rgb(178, 24, 43)
-                        )
-                ),
-
-                heatmapWeight(
-                        interpolate(
-                                linear(), get("alertRadius"),
-                                stop(0, 0),
-                                stop(6, 1)
-                        )
-                ),
-
-                heatmapIntensity(
-                        interpolate(
-                                linear(), zoom(),
-                                stop(0, 1),
-                                stop(9, 3)
-                        )
-                ),
-
-                heatmapRadius(
-                        interpolate(
-                                linear(), zoom(),
-                                stop(0, 2),
-                                stop(9, 20)
-                        )
-                ),
-
-                heatmapOpacity(
-                        interpolate(
-                                linear(), zoom(),
-                                stop(7, 1),
-                                stop(9, 0)
-                        )
-                )
-        );
-
-        loadedMapStyle.addLayerAbove(layer, "waterway-label");
-    }
-
-    private void addCircleLayer(@NonNull Style loadedMapStyle) {
-        CircleLayer circleLayer = new CircleLayer(CIRCLE_LAYER_ID, RED_ZONE_SOURCE_ID);
-        circleLayer.setProperties(
-
-// Size circle radius by earthquake magnitude and zoom level
-                circleRadius(
-                        interpolate(
-                                linear(), zoom(),
-                                literal(7), interpolate(
-                                        linear(), get("alertRadius"),
-                                        stop(1, 1),
-                                        stop(6, 4)
-                                ),
-                                literal(16), interpolate(
-                                        linear(), get("alertRadius"),
-                                        stop(1, 5),
-                                        stop(6, 50)
-                                )
-                        )
-                ),
-
-// Color circle by earthquake magnitude
-                circleColor(
-                        interpolate(
-                                linear(), get("alertRadius"),
-                                literal(1), rgba(33, 102, 172, 0),
-                                literal(2), rgb(103, 169, 207),
-                                literal(3), rgb(209, 229, 240),
-                                literal(4), rgb(253, 219, 199),
-                                literal(5), rgb(239, 138, 98),
-                                literal(6), rgb(178, 24, 43)
-                        )
-                ),
-
-// Transition from heatmap to circle layer by zoom level
-                circleOpacity(
-                        interpolate(
-                                linear(), zoom(),
-                                stop(7, 0),
-                                stop(8, 1)
-                        )
-                ),
-                circleStrokeColor("white"),
-                circleStrokeWidth(1.0f)
-        );
-
-        loadedMapStyle.addLayerBelow(circleLayer, RED_ZONE_LAYER_ID);
-    }
-
-    @SuppressLint("MissingPermission")
-    private void enableLocationComponent(@NonNull Style style) {
-        if (PermissionsManager.areLocationPermissionsGranted(getContext())) {
-            locationComponent = mapboxMap.getLocationComponent();
-            locationComponent.activateLocationComponent(
-                    LocationComponentActivationOptions.builder(getContext(),
-                            style).build()
-            );
-            locationComponent.setLocationComponentEnabled(true);
-            locationComponent.setCameraMode(CameraMode.TRACKING);
-            locationComponent.setRenderMode(RenderMode.COMPASS);
-        } else {
-            permissionsManager = new PermissionsManager(this);
-            permissionsManager.requestLocationPermissions(getActivity());
-        }
-    }
-
-    @Override
-    public void onExplanationNeeded(List<String> permissionsToExplain) {
-
-    }
-
-    @Override
-    public void onPermissionResult(boolean granted) {
 
     }
 
