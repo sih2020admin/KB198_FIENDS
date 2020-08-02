@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/privacy_policy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:autoLink="web"
+        android:textAlignment="textStart"
+        android:text="@string/if_you_would_like_to_contribute_to_a_safer_india_please_indicate_your_acceptance_of_the_terms_of_service_and_the_privacy_policy_by_clicking_on_the_button_below"
+        android:fontFamily="arial"
+        android:textColor="#3C3C3C"
+        android:textSize="@dimen/_10sdp" />
+
+</LinearLayout>
