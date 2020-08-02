@@ -20,7 +20,6 @@
         android:roundIcon="@drawable/app_icon_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activities.NotifyMessageActivity"></activity>
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
@@ -28,7 +27,19 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="@string/default_notification_channel_id" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_map_access_token" />
 
+        <activity android:name=".Activities.MapViewActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/DashBoardTheme" />
+        <activity
+            android:name=".Activities.UpdateAddressActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.NotifyMessageActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Activities.WebReportActivity"
             android:screenOrientation="portrait" />

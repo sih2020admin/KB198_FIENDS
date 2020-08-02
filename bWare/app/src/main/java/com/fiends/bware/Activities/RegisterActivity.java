@@ -37,6 +37,8 @@ import org.json.JSONObject;
 
 import im.delight.android.location.SimpleLocation;
 
+import static com.fiends.bware.Utils.Bware.showAppExitDialog;
+
 
 public class RegisterActivity extends AppCompatActivity implements BwareResponse {
 
@@ -494,6 +496,11 @@ public class RegisterActivity extends AppCompatActivity implements BwareResponse
     @Override
     public void DiseaseCount(String count, String type) {
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        showAppExitDialog(RegisterActivity.this);
     }
 
 }
