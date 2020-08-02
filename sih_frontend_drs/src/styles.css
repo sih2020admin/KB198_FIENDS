@@ -1026,3 +1026,93 @@ select {
   text-align-last: center;
   padding-right: 18px;
 }
+
+/* Style of symptoms page */
+.symptoms-result{
+  margin-top: 1rem;
+  align-self: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+}
+
+.symptoms-item{
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 10px;
+  padding: 0.6rem;
+  /* width: 25%; */
+  z-index: 10;
+  display: flex;
+  color: white;
+  flex-direction: column;
+  background-color: #C421F3;
+  /* width: 25%; */
+}
+
+.symptoms-item.clicked{
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 10px;
+  padding: 0.6rem;
+  /* width: 25%; */
+  z-index: 10;
+  display: flex;
+  color: #C421F3;
+  flex-direction: column;
+  background-color: white;
+  border: 1px solid #C421F3;
+  /* width: 25%; */
+}
+
+.effect8
+{
+  	position:relative;
+    -webkit-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+       -moz-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+            box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+}
+.effect8:before, .effect8:after
+{
+	content:"";
+    position:absolute;
+    z-index:-1;
+    -webkit-box-shadow:0 0 20px rgba(0,0,0,0.8);
+    -moz-box-shadow:0 0 20px rgba(0,0,0,0.8);
+    box-shadow:0 0 20px rgba(0,0,0,0.8);
+    top:10px;
+    bottom:10px;
+    left:0;
+    right:0;
+    -moz-border-radius:100px / 10px;
+    border-radius:100px / 10px;
+}
+.effect8:after
+{
+	right:10px;
+    left:auto;
+    -webkit-transform:skew(8deg) rotate(3deg);
+       -moz-transform:skew(8deg) rotate(3deg);
+        -ms-transform:skew(8deg) rotate(3deg);
+         -o-transform:skew(8deg) rotate(3deg);
+            transform:skew(8deg) rotate(3deg);
+}
+
+
+
+.listsym{
+  list-style-type: none;
+}
+.desc{
+  text-align:justify;
+  padding: 5px 5px 5px 5px;
+  color:#420B30;
+}
+.elements{
+  background-color:rgba(218, 23, 239, 0.1);
+   
+}
+.desc1{
+  color:#420B30;
+}

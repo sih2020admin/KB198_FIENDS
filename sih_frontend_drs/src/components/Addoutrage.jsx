@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Authentication from "../service/auth";
 import AutoComplete from "./AutoComplete";
+import AreaAutoComplete from "./AreaAutoComplete";
 
 function Addoutrage(props) {
   // console.log("token " + props.officalToken);
@@ -320,7 +321,15 @@ useEffect(() => {
       )} */}
         </div>
 
-        <AutoComplete getLocation={getLocation} />
+        <div className="styled-input">
+
+          <AreaAutoComplete getLocation={getLocation}/>
+
+        </div>
+
+
+
+        {/* <AutoComplete getLocation={getLocation} /> */}
 
         <div className="styled-input">
           {/* {props.label && (
