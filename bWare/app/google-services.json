@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "639776124449",
+    "firebase_url": "https://bware-6e670.firebaseio.com",
+    "project_id": "bware-6e670",
+    "storage_bucket": "bware-6e670.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:639776124449:android:1f26972c66a2217c4ffd60",
+        "android_client_info": {
+          "package_name": "com.fiends.bware"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "639776124449-fhoc05rva3okmcok0cp2sl5tppdho5ej.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCky7ErrXej6or18SbUFrR7lgsKA9FQe8Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "639776124449-fhoc05rva3okmcok0cp2sl5tppdho5ej.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

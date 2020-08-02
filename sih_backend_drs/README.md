@@ -1,1 +1,13 @@
-this is a sub repo
+Add secret values for the following envirnmental variables
+
+PORT = 5000
+
+MONGO_DB_USERNAME
+MONGO_DB_PASSWORD
+
+TWILIO_ACCOUNT_SID
+TWILIO_AUTH_TOKEN
+TWILIO_PHONE_NO
+JWT_SECRET
+
+SESSION_SECRET

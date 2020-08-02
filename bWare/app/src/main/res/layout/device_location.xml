@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/_4sdp"
+        android:textAlignment="textStart"
+        android:text="@string/device_location"
+        android:fontFamily="arial"
+        android:textColor="@color/colorBlack"
+        android:textSize="@dimen/_13sdp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:textAlignment="textStart"
+        android:text="@string/it_is_recommended_that_you_set_your_location_sharing_to_always_you_can_change_this_any_time_later"
+        android:fontFamily="arial"
+        android:textColor="@color/colorGrey"
+        android:textSize="@dimen/_10sdp" />
+</LinearLayout>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorAccent">#03DAC5</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorPurple">#5F2967</color>
+    <color name="colorNotificationPurple">#F9EAFB</color>
+    <color name="colorPurpleTrans">#805F2967</color>
+    <color name="colorLightPurpleTrans">#1A5F2967</color>
+    <color name="colorGrey">#3C3C3C</color>
+    <color name="colorLightGrey">#E1E1E1</color>
+    <color name="colorBlue">#006FFF</color>
+
+</resources>
