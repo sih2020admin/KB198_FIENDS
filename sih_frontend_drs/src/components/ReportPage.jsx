@@ -43,6 +43,13 @@ function ReportPage(props) {
 
   const [diseaseDetail ,  setDiseaseDetail] = useState({});
 
+  const [reportDetail , setReportDetail] = useState({
+    level:'',
+    disease:'',
+    startDate:'',
+    endDate:''
+  })
+
 
 
   useEffect(() => {
@@ -111,6 +118,19 @@ function ReportPage(props) {
     if (name === "disease") {
       setnavDisease(value);
     }
+  }
+
+  function ReportHandle(event){
+    const { name, value } = event.target;
+
+    setReportDetail((prevData)=>{
+      return{
+        ...prevData,
+        [name]:value
+      }
+    })
+
+
   }
 
 //  async function calcCount(count,info){
@@ -204,6 +224,45 @@ function ReportPage(props) {
         {name}{" "}
       </option>
     );
+  }
+
+  function downloadReport(Dtype){
+
+    console.log(reportDetail);
+
+    let DownloadUrl = '';
+
+    if(reportDetail.level === 'state'){
+        DownloadUrl = 'https://sih-drs-prototype-backend-2.herokuapp.com/api/report/softcopy/states/'+reportDetail.disease+'/'+reportDetail.startDate+'/'+reportDetail.endDate+'/'+Dtype
+    }
+
+    if(reportDetail.level === 'district'){
+      DownloadUrl = 'https://sih-drs-prototype-backend-2.herokuapp.com/api/report/softcopy/districts/'+reportDetail.disease+'/'+reportDetail.startDate+'/'+reportDetail.endDate+'/'+Dtype
+  }
+
+  if(reportDetail.level === 'place'){
+    DownloadUrl ='https://sih-drs-prototype-backend-2.herokuapp.com/api/report/softcopy/places/' +reportDetail.disease+'/'+reportDetail.startDate+'/'+reportDetail.endDate+'/'+Dtype
+  
+}
+
+  
+
+    console.log(DownloadUrl);
+    try {
+      axios.get(proxyurl + DownloadUrl,{responseType: 'blob'}).then(response => {
+        console.log(response.data);
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'file.'+Dtype);
+        document.body.appendChild(link);
+        link.click();
+      });
+    } catch (e) {
+      console.log(e);
+    }
+
+
   }
 
   return (
@@ -467,6 +526,101 @@ function ReportPage(props) {
         </div>
         <div className="col-md-4" >
            {isLoad && <DiseaseReport setDisease={navDisease} setdiseaseDetail={diseaseDetail}/>}   
+
+          <div className="row">
+            <div className="col-md-12">
+              <div className="card shadow">
+              <div className="card-title">
+                <h1 className="text-center text-info">Download Report</h1>
+              </div>
+                <div className="card-body"> 
+                        <div className="row mb-2">
+                          <div className="col-md-6 m-0">
+                          <div className="styled-input">
+                          <label>Disease</label>
+                                <select
+                              onChange={event => ReportHandle(event)}
+                              name="disease"
+                              className="form-control"
+                            >
+                              <option>Select the Disease </option>
+                              {DiseaseArray.map(optionList)}
+                            </select>
+                            <span />
+                          </div>
+                         
+                          </div>
+                          <div className='col-md-6'>
+                            <div className='styled-input'>
+                            <label>Select Level</label>
+                            <select
+                              onChange={event => ReportHandle(event)}
+                              name="level"
+                              className="form-control"
+                            >
+                            <option>Level</option>
+                            <option value='state'>State</option>
+                            <option value='district'>District</option>
+                            <option value='place'>Place</option>
+                            </select>
+                            </div>
+                          </div>
+                        
+                        </div>
+
+                            <div className='row my-2'>
+                            <div className='col-md-6'>
+                                <div className='styled-input'>
+                                <label className="m-0">Start Date </label>
+                          <input
+                            onChange={event => {
+                              ReportHandle(event);
+                            }}
+                            type="date"
+                            name='startDate'
+                            className="form-control"
+                          />
+                                </div>
+                            </div>
+                          <div className='col-md-6'>
+
+                            <div className='styled-input'>
+                            <label className="m-0">End Date </label>
+                          <input
+                            type="date"
+                            name='endDate'
+                            onChange={event => {
+                              ReportHandle(event);
+                            }}
+                            className="form-control"
+                          />
+                            </div>
+
+                          </div>
+                            </div>
+
+                        <div className='row'>
+                          <div className='col-md-12'> 
+                          <button className='btn btn-outline-dark my-2 W-100' onClick={()=>{
+                           downloadReport("json")
+                          }}>Download json</button>
+                          </div>
+
+
+                          <div className='col-md-12'>
+                            <button className='btn btn-outline-dark my-2 W-100' onClick={
+                              ()=>{downloadReport("xls")}
+                            }>Download Xls</button>
+                          </div>
+
+
+                        </div>
+                        
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
 

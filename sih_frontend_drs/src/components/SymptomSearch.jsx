@@ -17,7 +17,7 @@ function SymptomSearch(props) {
 
   const proxyurl = "https://cors-anywhere.herokuapp.com/";
   const url =
-    "https://sih-drs-prototype-backend-2.herokuapp.com/api/outrages/getDetails/symptoms/symptomsArr";
+    "https://sih-drs-prototype-backend-2.herokuapp.com/api/outrages/diseases/all";
   useEffect(() => {
     console.log("");
     try {
@@ -59,7 +59,7 @@ function SymptomSearch(props) {
 
   async function ListHandler(item) {
     setSearch(item);
-    props.setSimilarArray(getRandom(symptomsArray,6))
+    // props.setSimilarArray(getRandom(symptomsArray,6))
     // const save = await DiseaseName.setDisease(item);
     props.getName(item);
     setShowList(false);

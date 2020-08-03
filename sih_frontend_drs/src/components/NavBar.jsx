@@ -1,4 +1,6 @@
 import React, { useEffect , useState } from "react";
+import { useLocation } from 'react-router-dom'
+
 import $ from "jquery";
 import Authentication from "../service/auth";
 import LoginHelp from "../service/loginHelp";
@@ -17,6 +19,7 @@ function NavBar() {
   }, []);
 
   const history = useHistory();
+  let location = useLocation();
   const officalToken = Authentication.getToken();
 
 
@@ -31,6 +34,9 @@ function NavBar() {
 
 
   function navBar() {
+
+    
+console.log(location.pathname);
     function test() {
       var tabsNewAnim = $("#navbarSupportedContent");
       var selectorNewAnim = $("#navbarSupportedContent").find("li").length;
@@ -107,7 +113,7 @@ function NavBar() {
                 Dashboard
               </a>
             </li> */}
-            <li className={!isLogin ? "nav-item active" : "nav-item " }>
+            <li className={location.pathname === '/' ? "nav-item active" : "nav-item " }>
               {/* <a class="nav-link" href="/"> */}
               <Link className="nav-link" to="/">
                 <i className="far fa-address-book" />
@@ -115,7 +121,7 @@ function NavBar() {
               </Link>
               {/* </a> */}
             </li>
-            <li className={isLogin ? "nav-item active" : "nav-item " } >
+            <li className={location.pathname === '/outrage' || location.pathname === '/login' ? "nav-item active" : "nav-item " } >
               {/* <a class="nav-link" href="/outrage"> */}
               <Link className="nav-link" to="/outrage">
                 <i className="far fa-clone" />
@@ -123,17 +129,14 @@ function NavBar() {
               </Link>
               {/* </a> */}
             </li>
-<<<<<<< HEAD
-=======
-            <li className={isLogin ? "nav-item active" : "nav-item " } >
+            <li className={location.pathname === '/symptoms' ? "nav-item active" : "nav-item " } >
               {/* <a class="nav-link" href="/outrage"> */}
               <Link className="nav-link" to="/symptoms">
                 <i className="far fa-clone" />
-                Symptoms Checker
+                About Disease
               </Link>
               {/* </a> */}
             </li>
->>>>>>> 48a60c4102f13fe2ac8838f56c44906d17ae4186
             <li className="nav-item">
               {/* <a class="nav-link" href="/outrage"> */}
               {isLogin && <a className="nav-link" href="#" onClick={Logout}>

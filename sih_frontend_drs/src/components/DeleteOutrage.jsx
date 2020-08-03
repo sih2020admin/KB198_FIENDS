@@ -216,7 +216,7 @@ function DeleteOutrage(props) {
   return (
     <div>
       <div className="container">
-        <div className="row delete-outrage mt-3">
+        <div className="row edit-area mt-3">
           <div className="col-md-12">
             {isLoad && (
               <div id="spinner" class="loader-container">

@@ -692,7 +692,7 @@ body {
   background: #f9f6f7;
   font-family: "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans",
     "DejaVu Sans", Verdana, sans-serif;
-  max-height: 500px;
+  max-height: 600px;
   overflow-y: auto;
   overflow-x: hidden;
 }
@@ -705,10 +705,10 @@ body {
   padding: 1rem;
   text-align: center;
 }
-.form-outrage {
-  /* max-width: 75rem; */
-  margin: 0 auto;
-}
+/*.form-outrage {
+  /* max-width: rem;
+  margin: 0 auto; 
+}*/
 
 input:focus ~ label, textarea:focus ~ label, input:valid ~ label 
 /*, &.not-empty ~ label*/
@@ -861,7 +861,7 @@ textarea:focus ~ span {
 } */
 .edit-area,
 .location-alert {
-  max-height: 500px;
+  max-height: 600px;
   overflow-y: auto;
   overflow-x: hidden;
 }
@@ -1026,8 +1026,6 @@ select {
   text-align-last: center;
   padding-right: 18px;
 }
-<<<<<<< HEAD
-=======
 
 /* Style of symptoms page */
 .symptoms-result{
@@ -1067,55 +1065,16 @@ select {
   border: 1px solid #C421F3;
   /* width: 25%; */
 }
-
-.effect8
-{
-  	position:relative;
-    -webkit-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
-       -moz-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
-            box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
-}
-.effect8:before, .effect8:after
-{
-	content:"";
-    position:absolute;
-    z-index:-1;
-    -webkit-box-shadow:0 0 20px rgba(0,0,0,0.8);
-    -moz-box-shadow:0 0 20px rgba(0,0,0,0.8);
-    box-shadow:0 0 20px rgba(0,0,0,0.8);
-    top:10px;
-    bottom:10px;
-    left:0;
-    right:0;
-    -moz-border-radius:100px / 10px;
-    border-radius:100px / 10px;
-}
-.effect8:after
-{
-	right:10px;
-    left:auto;
-    -webkit-transform:skew(8deg) rotate(3deg);
-       -moz-transform:skew(8deg) rotate(3deg);
-        -ms-transform:skew(8deg) rotate(3deg);
-         -o-transform:skew(8deg) rotate(3deg);
-            transform:skew(8deg) rotate(3deg);
+.showClass{
+  font-size:0.875em;
+  display:inline-block;
+  left:-60px;
+  margin-top:35px;
+  width:100%;
+  
 }
 
-
-
-.listsym{
-  list-style-type: none;
+.quote{
+  font-size: 1.2rem;
+  margin-top: 1rem;
 }
-.desc{
-  text-align:justify;
-  padding: 5px 5px 5px 5px;
-  color:#420B30;
-}
-.elements{
-  background-color:rgba(218, 23, 239, 0.1);
-   
-}
-.desc1{
-  color:#420B30;
-}
->>>>>>> 48a60c4102f13fe2ac8838f56c44906d17ae4186
