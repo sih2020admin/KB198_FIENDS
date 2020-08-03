@@ -123,6 +123,17 @@ function NavBar() {
               </Link>
               {/* </a> */}
             </li>
+<<<<<<< HEAD
+=======
+            <li className={isLogin ? "nav-item active" : "nav-item " } >
+              {/* <a class="nav-link" href="/outrage"> */}
+              <Link className="nav-link" to="/symptoms">
+                <i className="far fa-clone" />
+                Symptoms Checker
+              </Link>
+              {/* </a> */}
+            </li>
+>>>>>>> 48a60c4102f13fe2ac8838f56c44906d17ae4186
             <li className="nav-item">
               {/* <a class="nav-link" href="/outrage"> */}
               {isLogin && <a className="nav-link" href="#" onClick={Logout}>

@@ -30,6 +30,10 @@
         <item name="android:keepScreenOn">true</item>
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:isLightTheme">true</item>
+<<<<<<< HEAD
+=======
+        <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
+>>>>>>> 48a60c4102f13fe2ac8838f56c44906d17ae4186
     </style>
 
     <style name="BottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">

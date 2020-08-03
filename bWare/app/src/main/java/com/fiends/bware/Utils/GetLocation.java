@@ -11,8 +11,16 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
+<<<<<<< HEAD
 import android.widget.Toast;
 
+=======
+import android.util.Log;
+import android.widget.Toast;
+
+import im.delight.android.location.SimpleLocation;
+
+>>>>>>> 48a60c4102f13fe2ac8838f56c44906d17ae4186
 
 public class GetLocation implements LocationListener {
 
@@ -61,7 +69,17 @@ public class GetLocation implements LocationListener {
         String provider = locationManager.getBestProvider(criteria, false);
         location = locationManager.getLastKnownLocation(provider);
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+<<<<<<< HEAD
         onLocationChanged(location);
+=======
+        if (location == null) {
+            SimpleLocation simpleLocation = new SimpleLocation(activity);
+            Log.i("NITH_AS",simpleLocation.getLatitude() + "");
+            response.getLocation(String.valueOf(simpleLocation.getLatitude()), String.valueOf(simpleLocation.getLongitude()));
+        } else {
+            onLocationChanged(location);
+        }
+>>>>>>> 48a60c4102f13fe2ac8838f56c44906d17ae4186
         locationManager.removeUpdates(this);
     }
     //  [77.2115047, 8.2157735]

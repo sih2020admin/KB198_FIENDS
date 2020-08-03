@@ -114,10 +114,10 @@ const locationBasedAlertSchema = new mongoose.Schema({
         type: [Number, Number],
         required: true,
     },
-    outrage: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "outrages",
-    },
+    // outrage: {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: "outrages",
+    // },
     message: {
         type: String,
         maxlength: 4096,

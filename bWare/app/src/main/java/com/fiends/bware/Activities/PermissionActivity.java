@@ -14,6 +14,11 @@ import com.fiends.bware.R;
 import com.fiends.bware.Utils.Bware;
 import com.fiends.bware.Utils.BwareFiles;
 
+<<<<<<< HEAD
+=======
+import static com.fiends.bware.Utils.Bware.showAppExitDialog;
+
+>>>>>>> 48a60c4102f13fe2ac8838f56c44906d17ae4186
 public class PermissionActivity extends AppCompatActivity {
 
     private Button appPermission;
@@ -64,4 +69,12 @@ public class PermissionActivity extends AppCompatActivity {
         return new BwareFiles(PermissionActivity.this).getFileLength("User Token");
     }
 
+<<<<<<< HEAD
+=======
+    @Override
+    public void onBackPressed() {
+        showAppExitDialog(PermissionActivity.this);
+    }
+
+>>>>>>> 48a60c4102f13fe2ac8838f56c44906d17ae4186
 }

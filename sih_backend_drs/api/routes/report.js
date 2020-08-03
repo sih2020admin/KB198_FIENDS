@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 let cors = require("cors");
+let json2xls = require("json2xls");
 
 router.use(
     cors({
@@ -13,6 +14,8 @@ router.use(
         credentials: true,
     })
 );
+router.use(json2xls.middleware);
+
 const { OutrageModel } = require("../models/outrage");
 const { StateModel, DistrictModel } = require("../models/place");
 
@@ -342,6 +345,387 @@ router.get(
             normalizeDailyCountObj(outrage.dailyMortalityObj);
             normalizeDailyCountObj(outrage.dailyCuredObj);
             return res.json(outrage);
+        } catch (error) {
+            console.log(error);
+            return res.json({ error: error });
+        }
+    }
+);
+
+function populateWithpopulationData(placeObj, locationDetails) {
+    if ("population" in locationDetails) {
+        placeObj["population"] = locationDetails.population;
+        placeObj["area"] = locationDetails.area;
+        placeObj["location"] = locationDetails.location;
+        placeObj["morbidityRate"] =
+            placeObj.morbidityCount / locationDetails.population;
+        placeObj["mortalityRate"] =
+            placeObj.mortalityCount / locationDetails.population;
+        placeObj["curedRate"] =
+            placeObj.curedCount / locationDetails.population;
+        placeObj["activeRate"] =
+            placeObj.activeCount / locationDetails.population;
+    }
+    placeObj["population"] = locationDetails.population;
+    if (locationDetails.area)
+        placeObj["populationDensity"] = Math.round(
+            locationDetails.population / locationDetails.area
+        );
+}
+// all states
+router.get(
+    "/softcopy/states/:disease/:date1/:date2/:fileType",
+    async (req, res) => {
+        const startDate = new Date(req.params.date1);
+        const endDate = new Date(req.params.date2);
+        const disease = req.params.disease;
+        const fileType = req.params.fileType;
+        try {
+            let outrages = await OutrageModel.aggregate([
+                {
+                    $match: {
+                        disease: disease,
+                        $or: [
+                            {
+                                $and: [
+                                    { startDate: { $gte: startDate } },
+                                    { startDate: { $lte: endDate } },
+                                ],
+                            },
+                            {
+                                $and: [
+                                    { startDate: { $lte: startDate } },
+                                    { endDate: { $gte: endDate } },
+                                ],
+                            },
+
+                            {
+                                $expr: {
+                                    $cond: [
+                                        { $ifNull: ["$endDate", true] },
+                                        {
+                                            $lte: ["$startDate", endDate],
+                                        },
+                                        {
+                                            $and: [
+                                                {
+                                                    $gte: [
+                                                        "$endDate",
+                                                        startDate,
+                                                    ],
+                                                },
+                                                {
+                                                    $lte: ["$endDate", endDate],
+                                                },
+                                            ],
+                                        },
+                                    ],
+                                },
+                            },
+                            {
+                                // endDate: { $gte: startDate },
+                                $and: [
+                                    { endDate: { $gte: startDate } },
+                                    { endDate: { $lte: endDate } },
+                                ],
+                            },
+                        ],
+                    },
+                },
+
+                {
+                    $group: {
+                        _id: { state: "$state" },
+                        morbidityCount: { $sum: "$morbidityCount" },
+                        mortalityCount: { $sum: "$mortalityCount" },
+                        curedCount: { $sum: "$curedCount" },
+                        startDate: { $first: "$startDate" },
+                        endDate: { $first: "$endDate" },
+                    },
+                },
+                {
+                    $project: {
+                        _id: 0,
+                        state: "$_id.state",
+                        morbidityCount: 1,
+                        mortalityCount: 1,
+                        curedCount: 1,
+                        activeCount: { $sum: "$morbidityCount" },
+                        startDate: 1,
+                        endDate: 1,
+                    },
+                },
+            ]).allowDiskUse(true);
+            if (outrages.length == 0) return res.status(400).json([]);
+
+            let details = await StateModel.find();
+            let stateDetails = {};
+            details.forEach((state) => {
+                stateDetails[state.state] = state;
+            });
+            outrages.forEach((stateObj) => {
+                populateWithpopulationData(
+                    stateObj,
+                    stateDetails[stateObj.state]
+                );
+            });
+
+            // make it downloadable
+            let filename = `all_places_${startDate
+                .toISOString()
+                .slice(0, 10)}_${endDate.toISOString().slice(0, 10)}`;
+            if (fileType == "json") {
+                filename = filename + ".json";
+                var json = JSON.stringify(outrages);
+                var mimetype = "application/json";
+                res.setHeader("Content-Type", mimetype);
+                res.setHeader(
+                    "Content-disposition",
+                    "attachment; filename=" + filename
+                );
+                return res.send(json);
+            } else if (fileType == "xls")
+                return res.xls(filename + ".xls", outrages);
+        } catch (error) {
+            console.log(error);
+            return res.json({ error: error });
+        }
+    }
+);
+
+// get softcopy of all districts
+router.get(
+    "/softcopy/districts/:disease/:date1/:date2/:fileType",
+    async (req, res) => {
+        const startDate = new Date(req.params.date1);
+        const endDate = new Date(req.params.date2);
+        const disease = req.params.disease;
+        const fileType = req.params.fileType;
+        try {
+            let outrages = await OutrageModel.aggregate([
+                {
+                    $match: {
+                        disease: disease,
+                        $or: [
+                            {
+                                $and: [
+                                    { startDate: { $gte: startDate } },
+                                    { startDate: { $lte: endDate } },
+                                ],
+                            },
+                            {
+                                $and: [
+                                    { startDate: { $lte: startDate } },
+                                    { endDate: { $gte: endDate } },
+                                ],
+                            },
+
+                            {
+                                $expr: {
+                                    $cond: [
+                                        { $ifNull: ["$endDate", true] },
+                                        {
+                                            $lte: ["$startDate", endDate],
+                                        },
+                                        {
+                                            $and: [
+                                                {
+                                                    $gte: [
+                                                        "$endDate",
+                                                        startDate,
+                                                    ],
+                                                },
+                                                {
+                                                    $lte: ["$endDate", endDate],
+                                                },
+                                            ],
+                                        },
+                                    ],
+                                },
+                            },
+                            {
+                                // endDate: { $gte: startDate },
+                                $and: [
+                                    { endDate: { $gte: startDate } },
+                                    { endDate: { $lte: endDate } },
+                                ],
+                            },
+                        ],
+                    },
+                },
+
+                {
+                    $group: {
+                        _id: { state: "$state", district: "$district" },
+                        morbidityCount: { $sum: "$morbidityCount" },
+                        mortalityCount: { $sum: "$mortalityCount" },
+                        curedCount: { $sum: "$curedCount" },
+                        startDate: { $first: "$startDate" },
+                        endDate: { $first: "$endDate" },
+                    },
+                },
+                {
+                    $project: {
+                        _id: 0,
+                        state: "$_id.state",
+                        district: "$_id.district",
+                        morbidityCount: 1,
+                        mortalityCount: 1,
+                        curedCount: 1,
+                        activeCount: { $sum: "$morbidityCount" },
+                        startDate: 1,
+                        endDate: 1,
+                    },
+                },
+            ]).allowDiskUse(true);
+            if (outrages.length == 0) return res.status(400).json([]);
+
+            let details = await DistrictModel.find();
+            let districtDetails = {};
+            details.forEach((districtDetail) => {
+                districtDetails[
+                    districtDetail.state + districtDetail.district
+                ] = districtDetail;
+            });
+            outrages.forEach((districtObj) => {
+                // console.log(districtObj, districtDetail);
+                districtObj = populateWithpopulationData(
+                    districtObj,
+                    districtDetails[districtObj.state + districtObj.district]
+                );
+            });
+
+            // make it downloadable
+            let filename = `all_places_${startDate
+                .toISOString()
+                .slice(0, 10)}_${endDate.toISOString().slice(0, 10)}`;
+            if (fileType == "json") {
+                filename = filename + ".json";
+                var json = JSON.stringify(outrages);
+                var mimetype = "application/json";
+                res.setHeader("Content-Type", mimetype);
+                res.setHeader(
+                    "Content-disposition",
+                    "attachment; filename=" + filename
+                );
+                return res.send(json);
+            } else if (fileType == "xls")
+                return res.xls(filename + ".xls", outrages);
+        } catch (error) {
+            console.log(error);
+            return res.json({ error: error });
+        }
+    }
+);
+
+// get softcopy of all places
+router.get(
+    "/softcopy/places/:disease/:date1/:date2/:fileType",
+    async (req, res) => {
+        const startDate = new Date(req.params.date1);
+        const endDate = new Date(req.params.date2);
+        const disease = req.params.disease;
+        const fileType = req.params.fileType;
+        try {
+            let outrages = await OutrageModel.aggregate([
+                {
+                    $match: {
+                        disease: disease,
+                        $or: [
+                            {
+                                $and: [
+                                    { startDate: { $gte: startDate } },
+                                    { startDate: { $lte: endDate } },
+                                ],
+                            },
+                            {
+                                $and: [
+                                    { startDate: { $lte: startDate } },
+                                    { endDate: { $gte: endDate } },
+                                ],
+                            },
+
+                            {
+                                $expr: {
+                                    $cond: [
+                                        { $ifNull: ["$endDate", true] },
+                                        {
+                                            $lte: ["$startDate", endDate],
+                                        },
+                                        {
+                                            $and: [
+                                                {
+                                                    $gte: [
+                                                        "$endDate",
+                                                        startDate,
+                                                    ],
+                                                },
+                                                {
+                                                    $lte: ["$endDate", endDate],
+                                                },
+                                            ],
+                                        },
+                                    ],
+                                },
+                            },
+                            {
+                                // endDate: { $gte: startDate },
+                                $and: [
+                                    { endDate: { $gte: startDate } },
+                                    { endDate: { $lte: endDate } },
+                                ],
+                            },
+                        ],
+                    },
+                },
+
+                {
+                    $group: {
+                        _id: {
+                            state: "$state",
+                            district: "$district",
+                            place: "$place",
+                        },
+                        morbidityCount: { $sum: "$morbidityCount" },
+                        mortalityCount: { $sum: "$mortalityCount" },
+                        curedCount: { $sum: "$curedCount" },
+                        startDate: { $first: "$startDate" },
+                        endDate: { $first: "$endDate" },
+                    },
+                },
+                {
+                    $project: {
+                        _id: 0,
+                        state: "$_id.state",
+                        district: "$_id.district",
+                        place: "$_id.place",
+                        morbidityCount: 1,
+                        mortalityCount: 1,
+                        curedCount: 1,
+                        activeCount: { $sum: "$morbidityCount" },
+                        startDate: 1,
+                        endDate: 1,
+                    },
+                },
+            ]).allowDiskUse(true);
+            if (outrages.length == 0) return res.status(400).json([]);
+
+            // make it downloadable
+            let filename = `all_places_${startDate
+                .toISOString()
+                .slice(0, 10)}_${endDate.toISOString().slice(0, 10)}`;
+            if (fileType == "json") {
+                filename = filename + ".json";
+                var json = JSON.stringify(outrages);
+                var mimetype = "application/json";
+                res.setHeader("Content-Type", mimetype);
+                res.setHeader(
+                    "Content-disposition",
+                    "attachment; filename=" + filename
+                );
+                return res.send(json);
+            } else if (fileType == "xls")
+                return res.xls(filename + ".xls", outrages);
         } catch (error) {
             console.log(error);
             return res.json({ error: error });

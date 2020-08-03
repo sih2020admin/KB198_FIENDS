@@ -65,6 +65,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
 
+<<<<<<< HEAD
+=======
+        Log.i("WORKINGAK","gddsye");
+>>>>>>> 48a60c4102f13fe2ac8838f56c44906d17ae4186
         final Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH);

@@ -12,6 +12,10 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.location.LocationManager;
 import android.os.Build;
+<<<<<<< HEAD
+=======
+import android.provider.SyncStateContract;
+>>>>>>> 48a60c4102f13fe2ac8838f56c44906d17ae4186
 import android.util.Log;
 import android.widget.ProgressBar;
 
@@ -19,7 +23,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 
+<<<<<<< HEAD
 import com.fiends.bware.R;
+=======
+import com.fiends.bware.Activities.RegisterActivity;
+import com.fiends.bware.Activities.SplashActivity;
+import com.fiends.bware.R;
+import com.fiends.bware.Services.LocationService;
+>>>>>>> 48a60c4102f13fe2ac8838f56c44906d17ae4186
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.Result;
@@ -280,4 +291,38 @@ public class Bware {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+<<<<<<< HEAD
+=======
+
+    public static final void showLogOutDialog(Activity activity, ArrayList<String> strings) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setTitle("Please confirm");
+        builder.setMessage("Do you want to Logout from the app?");
+        builder.setCancelable(true);
+
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+                new BwareFiles(activity).deleteFiles(strings);
+                Intent stopIntent = new Intent(activity, LocationService.class);
+                stopIntent.setAction(LocationService.ACTION_STOP_LOCATION_SERVICE);
+                activity.stopService(stopIntent);
+                activity.startActivity(new Intent(activity, RegisterActivity.class));
+                activity.finish();
+            }
+        });
+
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+>>>>>>> 48a60c4102f13fe2ac8838f56c44906d17ae4186
 }

@@ -89,7 +89,6 @@ router.post("/onlinePing", appUserAuth, async (req, res) => {
         return res.status(500).json({ error: error });
     }
 });
-
 // {location or address}
 router.put("/register/details", appUserAuth, async (req, res) => {
     const phNo = req.user.phNo;

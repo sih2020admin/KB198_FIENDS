@@ -143,37 +143,37 @@ const sendAlertToNearByUsers = async function (
         console.log(error);
     }
 };
-
 router.post(
     "/addOutrage/locationHistoryAlert",
-    officialWebAuth,
+    // officialWebAuth,
     async (req, res) => {
+        console.log(req.body);
         payload = req.body;
         payload.startDate = new Date(payload.startDate);
         payload.endDate = new Date(payload.endDate);
         try {
-            let outrage = await OutrageModel.findById(
-                OutrageModel.base.Types.ObjectId(payload.outrage)
-            );
-            if (!outrage)
-                return res
-                    .status(400)
-                    .json({ error: "forbidden, no outrage found" });
+            // let outrage = await OutrageModel.findById(
+            //     OutrageModel.base.Types.ObjectId(payload.outrage)
+            // );
+            // if (!outrage)
+            //     return res
+            //         .status(400)
+            //         .json({ error: "forbidden, no outrage found" });
             let outrageAlert = new LocationHistoryAlertModel(req.body);
             let result = await outrageAlert.save();
             if (!result) {
                 return res.status(400).json({ error: "failed, try again" });
             }
 
-            req.body.disease = outrage.disease;
+            // req.body.disease = outrage.disease;
             req.body.description = req.body.message;
             delete req.body.message;
             sendAlertToNearByUsers(
                 result.location,
                 {
                     body: req.body,
-                    title: outrage.disease + " disease Alert",
-                    disease: outrage.disease,
+                    title: "Disease Alert",
+                    // disease: outrage.disease,
                 },
                 50000,
                 "true"
@@ -211,7 +211,6 @@ const sendAlertToNearByNonSmartPhoneUsers = async function (
             },
         ]);
         // fetch reg token of users
-        console.log(nearbyUsers);
         let phNoArr = nearbyUsers.map((e) => e.phNo);
 
         // remove undefined fields
@@ -1177,7 +1176,7 @@ router.get(
 const { Client, serverPhNo } = require("../config/twilio");
 setInterval(async () => {
     let redzones = await VirtualRedzoneModel.find({ isCaseOpen: true });
-    let appUsers, totalCount, result, percent, actualCount, count;
+    let appUsers, totalCount, result, percent, predictedCount, count;
     redzones.forEach(async (redzone) => {
         totalCount = await appUserModel.countDocuments({
             "address.district": redzone.district,
@@ -1208,16 +1207,20 @@ setInterval(async () => {
         if (appUsers.length == 0) return;
         count = appUsers[0].count;
         percent = count / totalCount;
-        actualCount = count / percent;
-        // console.log(actualCount, count, totalCount);
-        if (actualCount >= redzone.maxAllowedPopulation) {
+        predictedCount = count / percent;
+
+        if (predictedCount >= redzone.maxAllowedPopulation) {
             // send alert to the phNo
-            result = await Client.messages.create({
-                body: `RedZone alert : More than ${actualCount} people might be entered the containment zone at ${redzone.place}  `,
-                from: serverPhNo,
-                to: redzone.alertPhNo,
-            });
-            console.log(result);
+            try {
+                result = await Client.messages.create({
+                    body: `RedZone alert : More than ${predictedCount} people might have entered the containment zone at ${redzone.place}  `,
+                    from: serverPhNo,
+                    to: redzone.alertPhNo,
+                });
+                console.log(result);
+            } catch (error) {
+                console.log(error);
+            }
         }
     });
 }, 60000);
@@ -1488,7 +1491,7 @@ router.post("/getDetails/symptoms/findPossibleDisease", async (req, res) => {
                     count += 1;
                 }
             });
-            if (count > 0) result.push([count, disease]);
+            result.push([count, disease]);
         });
         result = result.sort(function (a, b) {
             return b[0] - a[0];

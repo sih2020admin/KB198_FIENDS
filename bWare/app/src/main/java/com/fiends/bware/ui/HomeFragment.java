@@ -1,13 +1,23 @@
 package com.fiends.bware.ui;
 
 import android.annotation.SuppressLint;
+<<<<<<< HEAD
 import android.graphics.Color;
+=======
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+>>>>>>> 48a60c4102f13fe2ac8838f56c44906d17ae4186
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+<<<<<<< HEAD
+=======
+import android.widget.ImageView;
+>>>>>>> 48a60c4102f13fe2ac8838f56c44906d17ae4186
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
@@ -22,6 +32,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager.widget.ViewPager;
 
+<<<<<<< HEAD
+=======
+import com.fiends.bware.Activities.MapViewActivity;
+>>>>>>> 48a60c4102f13fe2ac8838f56c44906d17ae4186
 import com.fiends.bware.Adapters.InActiveZoneAdapter;
 import com.fiends.bware.Adapters.NearByZoneAdapter;
 import com.fiends.bware.Models.NearByZoneModel;
@@ -30,6 +44,7 @@ import com.fiends.bware.R;
 import com.fiends.bware.Utils.BwareFiles;
 import com.fiends.bware.Utils.GetLocation;
 import com.fiends.bware.Utils.ServerRequest;
+<<<<<<< HEAD
 import com.google.android.material.tabs.TabLayout;
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
@@ -55,6 +70,20 @@ import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
 import com.mapbox.turf.TurfMeta;
 import com.mapbox.turf.TurfTransformation;
+=======
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMapOptions;
+import com.google.android.gms.maps.LocationSource;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.tabs.TabLayout;
+>>>>>>> 48a60c4102f13fe2ac8838f56c44906d17ae4186
 import com.scwang.wave.MultiWaveHeader;
 
 import org.json.JSONArray;
@@ -65,6 +94,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Calendar;
+<<<<<<< HEAD
 import java.util.List;
 
 import im.delight.android.location.SimpleLocation;
@@ -100,6 +130,15 @@ import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.heatmapWeight;
 import static com.mapbox.turf.TurfConstants.UNIT_KILOMETERS;
 
 public class HomeFragment extends Fragment implements ServerResponse, OnMapReadyCallback, PermissionsListener {
+=======
+
+import im.delight.android.location.SimpleLocation;
+import io.supercharge.shimmerlayout.ShimmerLayout;
+
+import static com.fiends.bware.Utils.Bware.setProgressColour;
+
+public class HomeFragment extends Fragment implements ServerResponse, OnMapReadyCallback {
+>>>>>>> 48a60c4102f13fe2ac8838f56c44906d17ae4186
 
     private TabLayout LocationRadius;
     private TabLayout nearByZonePagerIndicator;
@@ -118,13 +157,21 @@ public class HomeFragment extends Fragment implements ServerResponse, OnMapReady
     private TextView stateDisease;
     private TextView districtDisease;
     private TextView placeDisease;
+<<<<<<< HEAD
     private PermissionsManager permissionsManager;
     private LocationComponent locationComponent;
+=======
+    private ImageView FullMap;
+>>>>>>> 48a60c4102f13fe2ac8838f56c44906d17ae4186
 
     private ProgressBar stateDiseaseProgress;
     private ProgressBar districtDiseaseProgress;
     private ProgressBar placeDiseaseProgress;
+<<<<<<< HEAD
     private MapboxMap mapboxMap;
+=======
+    private GoogleMap mMap;
+>>>>>>> 48a60c4102f13fe2ac8838f56c44906d17ae4186
 
     private MultiWaveHeader multiWaveHeader;
     private TextView appName;
@@ -136,6 +183,7 @@ public class HomeFragment extends Fragment implements ServerResponse, OnMapReady
     private ShimmerLayout sliderShimmer;
     private ShimmerLayout outrageShimmer;
 
+<<<<<<< HEAD
 //    private static final String TAG = "FilterActivity";
 //    private static final String TURF_CALCULATION_FILL_LAYER_GEOJSON_SOURCE_ID
 //            = "TURF_CALCULATION_FILL_LAYER_GEOJSON_SOURCE_ID";
@@ -147,11 +195,18 @@ public class HomeFragment extends Fragment implements ServerResponse, OnMapReady
 //    private Point lastClickPoint;
 //    private int circleRadius = RADIUS_SEEKBAR_MAX / 2;
 //    private TextView circleRadiusTextView;
+=======
+    private View NoRedZone;
+    private View NearByZone;
+>>>>>>> 48a60c4102f13fe2ac8838f56c44906d17ae4186
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
+<<<<<<< HEAD
         Mapbox.getInstance(getContext(), getString(R.string.access_token));
+=======
+>>>>>>> 48a60c4102f13fe2ac8838f56c44906d17ae4186
         final View root = inflater.inflate(R.layout.fragment_home, container, false);
 
         LocationRadius = root.findViewById(R.id.location_radius);
@@ -175,12 +230,28 @@ public class HomeFragment extends Fragment implements ServerResponse, OnMapReady
         sliderShimmer = root.findViewById(R.id.slider_shimmer);
         outrageShimmer = root.findViewById(R.id.outrage_shimmer);
         refreshLayout = root.findViewById(R.id.scrollRefresh);
+<<<<<<< HEAD
+=======
+        FullMap = root.findViewById(R.id.full_map_screen);
+        NoRedZone = root.findViewById(R.id.no_red_zone_layer);
+        NearByZone = root.findViewById(R.id.no_near_by_zone);
+
+>>>>>>> 48a60c4102f13fe2ac8838f56c44906d17ae4186
         sliderShimmer.startShimmerAnimation();
         sliderShimmer.setShimmerAnimationDuration(2000);
         outrageShimmer.setShimmerAnimationDuration(1000);
         outrageShimmer.startShimmerAnimation();
         refreshLayout.setRefreshing(true);
 
+<<<<<<< HEAD
+=======
+        FullMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), MapViewActivity.class));
+            }
+        });
+>>>>>>> 48a60c4102f13fe2ac8838f56c44906d17ae4186
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -261,6 +332,7 @@ public class HomeFragment extends Fragment implements ServerResponse, OnMapReady
     }
 
     private void initMap(Bundle savedInstanceState) {
+<<<<<<< HEAD
         SupportMapFragment mapFragment;
         if (savedInstanceState == null) {
 
@@ -279,18 +351,48 @@ public class HomeFragment extends Fragment implements ServerResponse, OnMapReady
         }
         if (mapFragment != null) {
             mapFragment.getMapAsync(HomeFragment.this);
+=======
+
+        SupportMapFragment mapFragment = SupportMapFragment.newInstance();
+        if (savedInstanceState == null) {
+            final FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            transaction.add(R.id.map, mapFragment);
+            transaction.commit();
+        } else {
+            mapFragment = (SupportMapFragment) getActivity().getSupportFragmentManager()
+                    .findFragmentById(R.id.map);
+        }
+
+        if (mapFragment != null) {
+            mapFragment.getMapAsync(this);
+>>>>>>> 48a60c4102f13fe2ac8838f56c44906d17ae4186
         }
     }
 
     private void updateStatus(final String distance) {
 
+<<<<<<< HEAD
         SimpleLocation location = new SimpleLocation(getContext(), true);
+=======
+        SimpleLocation location = new SimpleLocation(getContext());
+>>>>>>> 48a60c4102f13fe2ac8838f56c44906d17ae4186
         String locations = "[" + location.getLongitude() + ", " + location.getLatitude() + "]";
         nearByZonePager.removeAllViews();
         sliderShimmer.setVisibility(View.VISIBLE);
         sliderShimmer.startShimmerAnimation();
+<<<<<<< HEAD
         initZoneSlider(distance, locations);
         initRedZone(locations, "activeOutrages");
+=======
+        new GetLocation(getActivity(), new GetLocation.Response() {
+            @Override
+            public void getLocation(String latitude, String longitude) {
+                String location = "[" + longitude + ", " + latitude + "]";
+                initRedZone(location, "activeOutrages");
+            }
+        });
+        initZoneSlider(distance, locations);
+>>>>>>> 48a60c4102f13fe2ac8838f56c44906d17ae4186
 
     }
 
@@ -370,9 +472,17 @@ public class HomeFragment extends Fragment implements ServerResponse, OnMapReady
         if (success) {
             sliderShimmer.stopShimmerAnimation();
             sliderShimmer.setVisibility(View.INVISIBLE);
+<<<<<<< HEAD
             initNearByZoneSlider(nearByZoneModels);
         } else {
             nearByZonePager.removeAllViews();
+=======
+            NearByZone.setVisibility(View.INVISIBLE);
+            initNearByZoneSlider(nearByZoneModels);
+        } else {
+            nearByZonePager.removeAllViews();
+            NearByZone.setVisibility(View.VISIBLE);
+>>>>>>> 48a60c4102f13fe2ac8838f56c44906d17ae4186
             Toast.makeText(getActivity(), "Failed to load.", Toast.LENGTH_SHORT).show();
         }
     }
@@ -380,6 +490,7 @@ public class HomeFragment extends Fragment implements ServerResponse, OnMapReady
     @Override
     public void RedZone(boolean success, ArrayList<NearByZoneModel> nearByZoneModels, ArrayList<NearByZoneModel> redZoneLocationModel) {
         if (success) {
+<<<<<<< HEAD
             if (nearByZoneModels.size() == 0 && redZoneLocationModel.size() == 0) {
                 outrageShimmer.setVisibility(View.VISIBLE);
                 outrageShimmer.startShimmerAnimation();
@@ -389,12 +500,23 @@ public class HomeFragment extends Fragment implements ServerResponse, OnMapReady
             }
             initRedZone(nearByZoneModels);
 //            setUpMapLayer(redZoneLocationModel);
+=======
+            if (nearByZoneModels.size() == 0) {
+                NoRedZone.setVisibility(View.VISIBLE);
+            } else {
+                outrageShimmer.stopShimmerAnimation();
+                outrageShimmer.setVisibility(View.INVISIBLE);
+                NoRedZone.setVisibility(View.INVISIBLE);
+            }
+            initRedZone(nearByZoneModels);
+>>>>>>> 48a60c4102f13fe2ac8838f56c44906d17ae4186
         } else {
             inActiveOutrageRecyclerView.removeAllViews();
             Toast.makeText(getActivity(), "Failed to load.", Toast.LENGTH_SHORT).show();
         }
     }
 
+<<<<<<< HEAD
     @Override
     public void RedZoneResponse(boolean success, String response) {
         if (success) {
@@ -485,6 +607,69 @@ public class HomeFragment extends Fragment implements ServerResponse, OnMapReady
 //        return TurfTransformation.circle(centerPoint, radius / 10, 360, units);
 //    }
 
+=======
+    @SuppressLint("MissingPermission")
+    private void setUpMapLayer(ArrayList<NearByZoneModel> redZoneLocationModel) {
+
+        mMap.clear();
+        mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getContext(), R.raw.dark_map));
+        int StrokeColor = Color.argb(100, 255, 0, 0);
+        int FillColor = Color.argb(30, 255, 100, 0);
+        for (int i = 0; i < redZoneLocationModel.size(); i++) {
+            if (redZoneLocationModel.get(i).getRedZone()) {
+                FillColor = Color.argb(30, 255, 0, 0);
+            }
+            try {
+                JSONArray jsonArray = new JSONArray(redZoneLocationModel.get(i).getLocation());
+                mMap.addCircle(new CircleOptions()
+                        .center(new LatLng(Double.parseDouble(jsonArray.get(1).toString()), Double.parseDouble(jsonArray.get(0).toString())))
+                        .radius(Integer.parseInt(redZoneLocationModel.get(i).getRadius()))
+                        .strokeWidth(2)
+                        .strokeColor(StrokeColor)
+                        .fillColor(FillColor)
+                        .clickable(true))
+                        .setTag(redZoneLocationModel.get(i).getRadius());
+                mMap.addCircle(new CircleOptions()
+                        .center(new LatLng(Double.parseDouble(jsonArray.get(1).toString()), Double.parseDouble(jsonArray.get(0).toString())))
+                        .radius(Integer.parseInt(redZoneLocationModel.get(i).getRadius())/20)
+                        .strokeWidth(1)
+                        .fillColor(Color.RED));
+                mMap.setOnCircleClickListener(new GoogleMap.OnCircleClickListener() {
+                    @Override
+                    public void onCircleClick(Circle circle) {
+                        mMap.addMarker(
+                                new MarkerOptions()
+                                        .alpha(0.0f)
+                                        .position(circle.getCenter())
+                                        .title("Radius : " + circle.getTag().toString())
+                                        .snippet("Latitude: " + circle.getCenter().latitude + "    Longitude : " + circle.getCenter().longitude))
+                                .showInfoWindow();
+
+                    }
+                });
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        SimpleLocation location = new SimpleLocation(getActivity());
+        mMap.setMyLocationEnabled(true);
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 14.0f));
+    }
+
+    @Override
+    public void MapResponse(boolean success, ArrayList<NearByZoneModel> redZoneLocationModel) {
+        setUpMapLayer(redZoneLocationModel);
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+
+        mMap = googleMap;
+        mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getContext(), R.raw.dark_map));
+
+    }
+>>>>>>> 48a60c4102f13fe2ac8838f56c44906d17ae4186
 
     @SuppressLint("NewApi")
     @Override
@@ -530,6 +715,7 @@ public class HomeFragment extends Fragment implements ServerResponse, OnMapReady
 
     }
 
+<<<<<<< HEAD
     @Override
     public void onMapReady(@NonNull MapboxMap mapboxMap) {
         this.mapboxMap = mapboxMap;
@@ -674,4 +860,6 @@ public class HomeFragment extends Fragment implements ServerResponse, OnMapReady
 
     }
 
+=======
+>>>>>>> 48a60c4102f13fe2ac8838f56c44906d17ae4186
 }
