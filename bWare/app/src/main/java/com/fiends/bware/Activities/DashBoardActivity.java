@@ -41,13 +41,9 @@ public class DashBoardActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         LSactivity = DashBoardActivity.this;
-<<<<<<< HEAD
-        ContextCompat.startForegroundService(this, new Intent(this, LocationService.class));
-=======
         Intent intent = new Intent(this, LocationService.class);
         intent.setAction("DEFAULT");
         ContextCompat.startForegroundService(this, intent);
->>>>>>> 48a60c4102f13fe2ac8838f56c44906d17ae4186
         setContentView(R.layout.activity_dash_board);
         BottomNavigationView navView = findViewById(R.id.nav_view);
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);

@@ -85,8 +85,6 @@
         android:layout_marginTop="@dimen/_11sdp"
         android:layout_marginBottom="@dimen/_11sdp">
 
-<<<<<<< HEAD
-=======
         <include
             android:id="@+id/no_near_by_zone"
             layout="@layout/no_near_by_zone_card"
@@ -98,7 +96,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
->>>>>>> 48a60c4102f13fe2ac8838f56c44906d17ae4186
         <io.supercharge.shimmerlayout.ShimmerLayout
             android:id="@+id/slider_shimmer"
             android:layout_width="0dp"

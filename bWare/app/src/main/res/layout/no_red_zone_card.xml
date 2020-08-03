@@ -18,7 +18,7 @@
             android:text="No Red zones found in your location"
             android:textStyle="bold"
             android:textColor="@color/colorBlack"
-            android:textSize="@dimen/_13sdp"
+            android:textSize="@dimen/_8sdp"
             android:gravity="center"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

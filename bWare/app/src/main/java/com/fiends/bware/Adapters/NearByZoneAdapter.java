@@ -83,7 +83,7 @@ public class NearByZoneAdapter extends PagerAdapter {
             }
         });
 
-        if (position == nearByZoneModels.size()-1) {
+        if (position == 0) {
             Log.i("NITHIN_AASHIK_PS_2", "2");
             serverResponse.DiseaseClick(nearByZoneModels.get(0).getDiseaseName(),
                     nearByZoneModels.get(0).getStartDate());

@@ -16,10 +16,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-<<<<<<< HEAD
-=======
 import java.util.ArrayList;
->>>>>>> 48a60c4102f13fe2ac8838f56c44906d17ae4186
 
 public class BwareFiles {
 
@@ -189,8 +186,6 @@ public class BwareFiles {
         saveJSONData("Notification", mainData);
     }
 
-<<<<<<< HEAD
-=======
     public BwareFiles deleteFiles(ArrayList<String> filename) {
 
         for (int i=0; i<filename.size(); i++) {
@@ -200,5 +195,4 @@ public class BwareFiles {
         return this;
     }
 
->>>>>>> 48a60c4102f13fe2ac8838f56c44906d17ae4186
 }

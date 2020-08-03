@@ -22,4 +22,11 @@
         android:name="com.fiends.bware.ui.NotificationsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
+
+    <fragment
+        android:id="@+id/navigation_symptoms"
+        android:name="com.fiends.bware.ui.SymptomsFragment"
+        android:label="Disease Info"
+        tools:layout="@layout/fragment_symptoms" />
+
 </navigation>

@@ -2,10 +2,6 @@ package com.fiends.bware.Utils;
 
 import android.app.Activity;
 import android.util.Log;
-<<<<<<< HEAD
-import android.widget.Toast;
-=======
->>>>>>> 48a60c4102f13fe2ac8838f56c44906d17ae4186
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -15,15 +11,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.fiends.bware.App;
 import com.fiends.bware.Models.NearByZoneModel;
 import com.fiends.bware.Overrides.BwareResponse;
 import com.fiends.bware.Overrides.ServerResponse;
-<<<<<<< HEAD
-import com.fiends.bware.R;
-import com.fiends.bware.ui.HomeFragment;
-import com.mapbox.mapboxsdk.maps.MapboxMap;
-=======
->>>>>>> 48a60c4102f13fe2ac8838f56c44906d17ae4186
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -102,7 +93,7 @@ public class ServerRequest {
                 return headers;
             }
         };
-        queue.add(request);
+        App.getInstance().addToRequestQueue(request);
         return this;
     }
 
@@ -140,7 +131,7 @@ public class ServerRequest {
                 return headers;
             }
         };
-        queue.add(request);
+        App.getInstance().addToRequestQueue(request);
         return this;
     }
 
@@ -176,10 +167,6 @@ public class ServerRequest {
                 BwareFiles files = new BwareFiles(activity);
                 HashMap<String, String> headers = new HashMap<String, String>();
                 headers.put("Content-Type", "application/json; charset=utf-8");
-<<<<<<< HEAD
-                Log.i("TOKEN",files.readData("Temp"));
-                headers.put("x-user-token",files.readData("Temp"));
-=======
                 String token;
                 if (files.readData("Temp").isEmpty()) {
                     token = files.readData("User Token");
@@ -187,39 +174,10 @@ public class ServerRequest {
                     token = files.readData("Temp");
                 }
                 headers.put("x-user-token",token);
->>>>>>> 48a60c4102f13fe2ac8838f56c44906d17ae4186
                 return headers;
             }
         };
-        queue.add(request);
-        return this;
-    }
-
-    public ServerRequest sendToken(JSONObject jsonObject, String token) {
-
-        RequestQueue queue = Volley.newRequestQueue(activity.getApplicationContext());
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.PUT, url, jsonObject,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                    }
-                }){
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> headers = new HashMap<String, String>();
-                headers.put("Content-Type", "application/json; charset=utf-8");
-                headers.put("x-user-token",token);
-                return headers;
-            }
-        };
-        queue.add(request);
+        App.getInstance().addToRequestQueue(request);
         return this;
     }
 
@@ -253,7 +211,7 @@ public class ServerRequest {
                 return headers;
             }
         };
-        queue.add(request);
+        App.getInstance().addToRequestQueue(request);
         return this;
     }
 
@@ -288,13 +246,14 @@ public class ServerRequest {
                 return headers;
             }
         };
-        queue.add(request);
+        App.getInstance().addToRequestQueue(request);
         return this;
     }
 
     public ServerRequest getDiseasesCount() {
 
         RequestQueue queue = Volley.newRequestQueue(activity.getApplicationContext());
+        Log.i("CURRENTLINK",url);
         final StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -322,17 +281,14 @@ public class ServerRequest {
                 return headers;
             }
         };
-        queue.add(request);
+        App.getInstance().addToRequestQueue(request);
         return this;
     }
 
     public ServerRequest getNearByOutrages() {
 
         final ArrayList<NearByZoneModel> nearByZoneModels = new ArrayList<>();
-<<<<<<< HEAD
-=======
         final ArrayList<NearByZoneModel> redZoneLocationModel = new ArrayList<>();
->>>>>>> 48a60c4102f13fe2ac8838f56c44906d17ae4186
         RequestQueue queue = Volley.newRequestQueue(activity.getApplicationContext());
         final StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
@@ -340,34 +296,33 @@ public class ServerRequest {
                 try {
                     JSONObject jsonObject = new JSONObject(response);
                     JSONArray jsonArray = new JSONArray(jsonObject.getString("features"));
+                    JSONArray dataArray = new JSONArray();
                     Log.i("URLLINK",url);
                     Log.i("URLLINK",response);
                     for (int i=0; i<jsonArray.length(); i++) {
                         JSONObject jsonObject1 = new JSONObject(jsonArray.get(i).toString());
                         JSONObject object = new JSONObject(jsonObject1.getString("properties"));
-<<<<<<< HEAD
-=======
                         JSONObject geometry = new JSONObject(jsonObject1.getString("geometry"));
                         JSONArray coordinates = new JSONArray(geometry.getString("coordinates"));
->>>>>>> 48a60c4102f13fe2ac8838f56c44906d17ae4186
                         nearByZoneModels.add(new NearByZoneModel(
                                 object.getString("disease"),
                                 object.getString("description"),
                                 Bware.getDate(object.getString("startDate")),
                                 object.getString("distance")));
-<<<<<<< HEAD
-                        serverResponse.NearByZoneResponse(true, nearByZoneModels);
-                    }
-=======
+                        dataArray.put(object.getString("disease"));
+                        dataArray.put(object.getString("alertRadius"));
+                        dataArray.put(object.getString("morbidityCount"));
+                        dataArray.put(object.getString("mortalityCount"));
+                        dataArray.put(object.getString("curedCount"));
                         redZoneLocationModel.add(new NearByZoneModel(
                                 "[" + coordinates.get(0).toString() + ", " + coordinates.get(1).toString() + "]",
                                 object.getString("alertRadius"),
-                                Boolean.parseBoolean(object.getString("isRedZone"))
+                                Boolean.parseBoolean(object.getString("isRedZone")),
+                                dataArray
                         ));
                     }
                     serverResponse.NearByZoneResponse(true, nearByZoneModels);
                     serverResponse.MapResponse(true, redZoneLocationModel);
->>>>>>> 48a60c4102f13fe2ac8838f56c44906d17ae4186
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -375,11 +330,7 @@ public class ServerRequest {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-<<<<<<< HEAD
-                serverResponse.NearByZoneResponse(false,null);
-=======
 
->>>>>>> 48a60c4102f13fe2ac8838f56c44906d17ae4186
             }
         }){
             @Override
@@ -392,7 +343,7 @@ public class ServerRequest {
                 return headers;
             }
         };
-        queue.add(request);
+        App.getInstance().addToRequestQueue(request);
         return this;
     }
 
@@ -405,45 +356,25 @@ public class ServerRequest {
             @Override
             public void onResponse(String response) {
                 try {
-                    if (response.equals("[]")) {
-                        serverResponse.RedZone(true, nearByZoneModels, redZoneLocationModel);
-<<<<<<< HEAD
-                    }
                     Log.i("URLLINK",url);
                     Log.i("URLLINK",response);
-                    JSONObject jsonObject = new JSONObject(response);
-                    JSONObject previousOutrages = new JSONObject(jsonObject.getString(type));
-                    JSONArray jsonArray = new JSONArray(previousOutrages.getString("features"));
-                    for (int i=0; i<jsonArray.length(); i++) {
-                        JSONObject jsonObject1 = new JSONObject(jsonArray.get(i).toString());
-                        JSONObject object = new JSONObject(jsonObject1.getString("properties"));
-                        JSONObject geometry = new JSONObject(jsonObject1.getString("geometry"));
-                        JSONArray coordinates = new JSONArray(geometry.getString("coordinates"));
-                        nearByZoneModels.add(new NearByZoneModel(
-                                object.getString("disease"),
-                                object.getString("description"),
-                                object.getString("startDate"),
-                                object.getString("distance")));
-
-                        redZoneLocationModel.add(new NearByZoneModel(
-                                "[" + coordinates.get(0).toString() + ", " + coordinates.get(1).toString() + "]",
-                                object.getString("alertRadius")
-                        ));
-                    }
-                    serverResponse.RedZone(true, nearByZoneModels, redZoneLocationModel);
-                    serverResponse.RedZoneResponse(true, previousOutrages.toString());
-=======
+                    if (response.equals("[]")) {
+                        serverResponse.RedZone(true, nearByZoneModels, redZoneLocationModel);
                     } else {
-                        Log.i("URLLINK",url);
-                        Log.i("URLLINK",response);
                         JSONObject jsonObject = new JSONObject(response);
                         JSONObject previousOutrages = new JSONObject(jsonObject.getString(type));
+                        JSONArray dataArray = new JSONArray();
                         JSONArray jsonArray = new JSONArray(previousOutrages.getString("features"));
                         for (int i=0; i<jsonArray.length(); i++) {
                             JSONObject jsonObject1 = new JSONObject(jsonArray.get(i).toString());
                             JSONObject object = new JSONObject(jsonObject1.getString("properties"));
                             JSONObject geometry = new JSONObject(jsonObject1.getString("geometry"));
                             JSONArray coordinates = new JSONArray(geometry.getString("coordinates"));
+                            dataArray.put(object.getString("disease"));
+                            dataArray.put(object.getString("alertRadius"));
+                            dataArray.put(object.getString("morbidityCount"));
+                            dataArray.put(object.getString("mortalityCount"));
+                            dataArray.put(object.getString("curedCount"));
                             nearByZoneModels.add(new NearByZoneModel(
                                     object.getString("disease"),
                                     object.getString("description"),
@@ -451,12 +382,12 @@ public class ServerRequest {
                                     object.getString("distance")));
                             redZoneLocationModel.add(new NearByZoneModel(
                                     "[" + coordinates.get(0).toString() + ", " + coordinates.get(1).toString() + "]",
-                                    object.getString("alertRadius")
+                                    object.getString("alertRadius"),
+                                    dataArray
                             ));
                         }
                         serverResponse.RedZone(true, nearByZoneModels, redZoneLocationModel);
                     }
->>>>>>> 48a60c4102f13fe2ac8838f56c44906d17ae4186
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -477,7 +408,7 @@ public class ServerRequest {
                 return headers;
             }
         };
-        queue.add(request);
+        App.getInstance().addToRequestQueue(request);
         return this;
     }
 
@@ -505,7 +436,7 @@ public class ServerRequest {
                 return headers;
             }
         };
-        queue.add(request);
+        App.getInstance().addToRequestQueue(request);
         return this;
     }
 

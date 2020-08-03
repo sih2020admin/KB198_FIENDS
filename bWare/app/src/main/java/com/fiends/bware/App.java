@@ -4,16 +4,12 @@ import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.os.Build;
-<<<<<<< HEAD
-
-=======
 import android.text.TextUtils;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.Volley;
->>>>>>> 48a60c4102f13fe2ac8838f56c44906d17ae4186
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.io.File;
@@ -22,21 +18,15 @@ public class App extends Application {
 
     private File file;
     public static final String CHANNEL_ID = "LocationServiceChannel";
-<<<<<<< HEAD
-=======
     public static final String TAG = "VolleyPatterns";
 
     private RequestQueue requestQueue;
     public static App Instance;
->>>>>>> 48a60c4102f13fe2ac8838f56c44906d17ae4186
 
     @Override
     public void onCreate() {
         super.onCreate();
-<<<<<<< HEAD
-=======
         Instance = this;
->>>>>>> 48a60c4102f13fe2ac8838f56c44906d17ae4186
         createNotificationChannel();
         createBgNotificationChannel();
         file = new File(this.getExternalFilesDir("/").toString(),"Data/");
@@ -66,8 +56,6 @@ public class App extends Application {
             manager.createNotificationChannel(serviceChannel);
         }
     }
-<<<<<<< HEAD
-=======
 
     public static synchronized App getInstance() {
         return Instance;
@@ -100,5 +88,4 @@ public class App extends Application {
         }
     }
 
->>>>>>> 48a60c4102f13fe2ac8838f56c44906d17ae4186
 }

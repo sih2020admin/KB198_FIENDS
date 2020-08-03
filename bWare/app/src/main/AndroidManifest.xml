@@ -20,10 +20,6 @@
         android:roundIcon="@drawable/app_icon_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-<<<<<<< HEAD
-        <activity android:name=".Activities.NotifyMessageActivity"></activity>
-=======
->>>>>>> 48a60c4102f13fe2ac8838f56c44906d17ae4186
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
@@ -31,9 +27,6 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="@string/default_notification_channel_id" />
-<<<<<<< HEAD
-
-=======
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_map_access_token" />
@@ -47,7 +40,6 @@
         <activity
             android:name=".Activities.NotifyMessageActivity"
             android:screenOrientation="portrait" />
->>>>>>> 48a60c4102f13fe2ac8838f56c44906d17ae4186
         <activity
             android:name=".Activities.WebReportActivity"
             android:screenOrientation="portrait" />

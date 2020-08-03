@@ -59,20 +59,32 @@ public class NotificationActivity extends AppCompatActivity {
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = new JSONObject(jsonArray.get(i).toString());
                 JSONObject object = new JSONObject(jsonObject.getString("obj"));
-                notificationModels.add(new NotificationModel(Boolean.parseBoolean(jsonObject.getString("redzone")),
-                        object.getString("title"),
-                        object.getString("description"),
-                        jsonObject.getString("date"),
-                        Boolean.parseBoolean(jsonObject.getString("viewed")),
-                        object.getString("disease"),
-                        jsonArray));
+                if (Boolean.parseBoolean(jsonObject.getString("redzone"))) {
+                    notificationModels.add(new NotificationModel(
+                            Boolean.parseBoolean(jsonObject.getString("redzone")),
+                            object.getString("title"),
+                            object.getString("description"),
+                            jsonObject.getString("date"),
+                            Boolean.parseBoolean(jsonObject.getString("viewed")),
+                            object.getString("title"),
+                            jsonArray));
+                } else {
+                    notificationModels.add(new NotificationModel(
+                            Boolean.parseBoolean(jsonObject.getString("redzone")),
+                            object.getString("title"),
+                            object.getString("description"),
+                            jsonObject.getString("date"),
+                            Boolean.parseBoolean(jsonObject.getString("viewed")),
+                            object.getString("disease"),
+                            jsonArray));
+                }
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
         notificationAdapter = new NotificationAdapter(notificationModels, NotificationActivity.this);
-        notificationRecyclerView.setLayoutManager(new GridLayoutManager(NotificationActivity.this, 1, GridLayoutManager.VERTICAL, false));
+        notificationRecyclerView.setLayoutManager(new GridLayoutManager(NotificationActivity.this, 1, GridLayoutManager.VERTICAL, true));
         notificationRecyclerView.setAdapter(notificationAdapter);
     }
 

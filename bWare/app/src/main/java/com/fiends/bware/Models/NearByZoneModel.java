@@ -1,5 +1,7 @@
 package com.fiends.bware.Models;
 
+import org.json.JSONArray;
+
 public class NearByZoneModel {
 
     private String diseaseName;
@@ -9,11 +11,9 @@ public class NearByZoneModel {
     private String location;
     private String radius;
 
-<<<<<<< HEAD
-=======
     private Boolean isRedZone;
+    private JSONArray dataArray;
 
->>>>>>> 48a60c4102f13fe2ac8838f56c44906d17ae4186
     public NearByZoneModel(String diseaseName, String diseaseDiscription, String startDate, String distance) {
         this.diseaseName = diseaseName;
         this.diseaseDiscription = diseaseDiscription;
@@ -26,12 +26,25 @@ public class NearByZoneModel {
         this.radius = radius;
     }
 
-<<<<<<< HEAD
-=======
-    public NearByZoneModel(String location, String radius, Boolean isRedZone) {
+    public NearByZoneModel(String location, String radius, Boolean isRedZone, JSONArray dataArray) {
         this.location = location;
         this.radius = radius;
         this.isRedZone = isRedZone;
+        this.dataArray = dataArray;
+    }
+
+    public NearByZoneModel(String location, String radius, JSONArray dataArray) {
+        this.location = location;
+        this.radius = radius;
+        this.dataArray = dataArray;
+    }
+
+    public JSONArray getDataArray() {
+        return dataArray;
+    }
+
+    public void setDataArray(JSONArray dataArray) {
+        this.dataArray = dataArray;
     }
 
     public Boolean getRedZone() {
@@ -42,7 +55,6 @@ public class NearByZoneModel {
         isRedZone = redZone;
     }
 
->>>>>>> 48a60c4102f13fe2ac8838f56c44906d17ae4186
     public String getLocation() {
         return location;
     }
