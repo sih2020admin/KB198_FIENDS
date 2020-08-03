@@ -17,8 +17,23 @@ function SymptomsPage(props){
 
   
 
-    function getName(input){
-        setIsLoad(true)
+    async function getName(input){
+        const proxyurl = "https://cors-anywhere.herokuapp.com/";
+        const GetDisease="https://sih-drs-prototype-backend-2.herokuapp.com/api/outrages/getDetails/"+input
+        console.log(GetDisease)
+        try{
+            const Disresponse = await axios.get(
+                proxyurl + GetDisease
+              );
+              setDiseaseDetail(Disresponse.data);
+              SetDataLoad(true)
+              console.log("👉 Returned data:", Disresponse.data);
+
+        }catch (e) {
+            // props.getStatus("error", "Outrage Added");
+            console.log(`😱 Axios request failed: ${e}`);
+          }
+        // setIsLoad(true)
 
     }
 
@@ -109,7 +124,7 @@ function SymptomsPage(props){
         <NavBar />
         <SymptomsSearch getName={getName} setSimilarArray={setSimilarArray}/>
        
-        {isLoad && (
+        {/* {isLoad && (
             <div>
             <h1 className="text-center">Click Similar Symptoms</h1>
             <div className="my-3 symptoms-result">
@@ -122,55 +137,96 @@ function SymptomsPage(props){
             }}> Search With Symptoms</button>
             </div>
             </div>
-        )}
+        )} */}
 
         {isDataLoad&& <div className='row mt-3'>
             <div className="col-md-12">
 
-                <div className="card shadow">
-                    <div className='card-body'>
-                        <h1 className='disease-Name text-info text-center'>Malaria</h1>
+            <div className="card shadow">
+                <div  className='card-Title'> 
+                    <h1 className='text-center text-info'>
+                    {diseaseDetail.disease}
+                    </h1>
+                </div>
+                <div className='card-body'>
 
-                        <div className="row">
-                            <div className="col-md-6">
-                                <div className="card shadow">
-                                <h1 className='disease-Name text-info text-left px-4'>Description</h1>
-                                    <h4 className="p-3">
-                                    {diseaseDetail.description}
-                                    </h4>
-                                </div>
-                               
-                            </div>
-                            <div className="col-md-6">
-                                <div className="card shadow">
-                                <h1 className='disease-Name text-info text-left px-4'>Guidelines</h1>
-                                    <h4 className="p-3">
-                                    {diseaseDetail.guidelines}
-                                    </h4>
-                                </div>
-                               
-                            </div>
-                            <div className="col-md-6">
-                                <div className="card shadow">
-                                <h1 className='disease-Name text-info text-left px-4'>Treatment</h1>
-                                    <h3 className="text-center text-info">Human</h3>
-                                    <h4 className="p-3">
-                                   {diseaseDetail.treatments.humans}
-                                    </h4>
-                                    <h3 className="text-center text-info">Animal</h3>
-                                    <h4 className="p-3">
-                                   {diseaseDetail.treatments.animals}
-                                    </h4>
-                                </div>
-                               
-                            </div>
+                    <div className='desc'> 
+                    <h1 className='disease-Name text-info text-left px-4'>Description <i class="fas fa-pencil-alt text-primary"></i></h1>
+                    <h4 className="p-3">
+                        {diseaseDetail.description}
+                    </h4>
+                    </div>
+                    <div className='guide'> 
+                    <h1 className='disease-Name text-info text-left px-4'>Guidelines <i class="fab fa-glide text-primary"></i></h1>
+                    <h4 className="p-3">
+                        {diseaseDetail.guidelines}
+                    </h4>
+                    </div>
+
+                    <div className='container-fluid'>
+                    <h1 className='disease-Name text-info text-left px-4'>Symptoms <i class="fas fa-assistive-listening-systems text-primary"></i></h1>
+                    <div className='row'>
+                  
+                        <div className='col-md-6 text-left'>
+                        
+                        <h2 className='text-info' style={{fontSize:'20px',fontWeight:'500'}}>
+                            Human <i class="fas fa-male text-info"></i>
+                        </h2>
+
+                        {diseaseDetail.symptoms.humans.map((value,index)=>{
+                                return (<div>  <h4 key={index}><i class="fas fa-italic"></i> {value}</h4> </div>)
+                        })}
+
                             
                         </div>
+                        <div className='col-md-6 text-left'>
+                        
+                        <h2 className='text-info' style={{fontSize:'20px',fontWeight:'500'}}>
+                            Animal <i class="fas fa-paw text-info"></i>
+                        </h2>
 
-                        
-                        
+                        {diseaseDetail.symptoms.animals.map((value,index)=>{
+                            return (<div> <h4  key={index}> <i class="fas fa-italic"></i> {value}</h4> </div>)
+                        })}
+
+                            
+                        </div>
+                       
                     </div>
+                    </div>
+
+                    <div className='guide'> 
+                    <h1 className='disease-Name text-info text-left px-4'>Treatments</h1>\
+                    <div className='row'>
+                        <div className='col-md-6 text-left'> 
+                        <h2 className='text-info' style={{fontSize:'20px',fontWeight:'500'}}>
+                            Human <i class="fas fa-male text-info"></i>
+                        </h2>
+                        <h4 className="p-3">
+                        <i class="fas fa-italic"></i> 
+                        {diseaseDetail.treatments.humans}
+                        </h4>
+                        </div>
+                        <div className='col-md-6 text-left'> 
+                        <h2 className='text-info' style={{fontSize:'20px',fontWeight:'500'}}>
+                            Animal <i class="fas fa-paw text-info"></i>
+                        </h2>
+                        <h4 className="p-3">
+                        <i class="fas fa-italic"></i> 
+                        {diseaseDetail.treatments.animals}
+                        </h4>
+                        </div>
+                    </div>
+                    
+                    </div>
+
+                    
+
                 </div>
+
+            </div>
+
+              
 
             </div>
         </div>}

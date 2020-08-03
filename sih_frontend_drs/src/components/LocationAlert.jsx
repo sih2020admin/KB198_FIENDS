@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Authentication from "../service/auth";
+import AreaAutoComplete from "./AreaAutoComplete";
+
 
 function LocationAlert(props) {
   const [outrage, setOutrage] = useState([]);
@@ -9,6 +11,17 @@ function LocationAlert(props) {
   const [closed, setClosed] = useState(false);
   const [Oplace, setPlace] = useState(null);
   const [Olocation, setLocation] = useState([]);
+
+  const [newLoctionalert,SetNewLoctionAlert] = useState(
+    {
+      place: "",
+      location: [],
+      alertRadius: "",
+      startDate: "",
+      endDate: "",
+      message: ""
+    }
+  )
 
   const [closeOutrage, setCloseOutrage] = useState({
     outrage: "",
@@ -55,6 +68,15 @@ function LocationAlert(props) {
         location: Olocation
       };
     });
+  }
+
+  function newHandleChange(event){
+    const { name, value } = event.target;
+    SetNewLoctionAlert(prevData => {
+    return {  ...prevData,
+      [name]: value,
+    }
+    })
   }
 
   async function SubmitHandle() {
@@ -200,11 +222,103 @@ function LocationAlert(props) {
     );
   }
 
+  function getLocation(input) {
+    props.getLocation(input.location);
+
+    SetNewLoctionAlert(prevData => {
+      return {
+        ...prevData,
+        place: input.place,
+        location: input.location
+      };
+    });
+  }
+
+  async function AddNewAlert(){
+    console.log(newLoctionalert)
+    try {
+      const response = await axios.post(
+        proxyurl +
+          "https://sih-drs-prototype-backend-2.herokuapp.com/api/outrages/addOutrage/locationHistoryAlert",
+          newLoctionalert,
+        {
+          headers: {
+            "x-official-token": `${officalToken}`
+          }
+        }
+      );
+      console.log("👉 Returned data:", response);
+      setClosed(false);
+      props.getStatus("success", "Location Based Alert Added");
+      props.getId(123);
+    } catch (e) {
+      props.getStatus("error", "Location Based Alert Added");
+      console.log(`😱 Axios request failed: ${e}`);
+    }
+  }
+
+
   return (
     <div>
       <div className="container">
         <div className="row location-alert">
           <div className="col-md-12">
+          <div className='loction-form my-3'>
+            <h1 className="text-info text-center ">Add New Location Alert</h1>
+          <div className="expand-input open p-3">
+          <div className="styled-input">
+
+          <AreaAutoComplete getLocation={getLocation}/>
+
+        </div>
+            <div className="styled-input">
+              <label className="mx-3">Start Date </label>
+              <input
+                placeholder="Date"
+                name="startDate"
+                onChange={event => newHandleChange(event)}
+                type="date"
+                // value={outrage.disease}
+                // autoComplete={props.autoComplete}
+              />
+            </div>
+            <div className="styled-input">
+              <label className="mx-3">End Date </label>
+              <input
+                placeholder="Date"
+                name="endDate"
+                onChange={event => newHandleChange(event)}
+                type="date"
+              />
+            </div>
+            <div className="styled-input">
+              <label className="mr-3">Alert Radius </label>
+              <input
+                placeholder="Alert Radius"
+                name="alertRadius"
+                onChange={event => newHandleChange(event)}
+                type="number"
+              />
+            </div>
+            <div className="styled-input">
+              <label className="mr-3">Message </label>
+              <input
+                placeholder="message"
+                name="message"
+                onChange={event => newHandleChange(event)}
+                type="text"
+              />
+            </div>
+            <button
+              class="butt my-3 ml-5"
+              onClick={() => {
+                AddNewAlert();
+              }}
+            >
+              Add Alert
+            </button>
+          </div>
+          </div>
             {isLoad && (
               <div id="spinner" class="loader-container">
                 <div class="loading" />
