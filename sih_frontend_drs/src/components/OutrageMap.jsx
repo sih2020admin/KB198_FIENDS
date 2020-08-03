@@ -17,7 +17,7 @@ function OutrageMap(props) {
 
   const [viewport, setViewport] = useState({
     width: "100%",
-    height: "100vh",
+    height: "600px",
     latitude: 9.7577,
     longitude: 78.4376,
     zoom: 5
@@ -54,7 +54,7 @@ function OutrageMap(props) {
       setTemp(true);
       setViewport({
         width: "100%",
-        height: "100vh",
+        height: "640px",
         latitude: props.markerLoc[1],
         longitude: props.markerLoc[0],
         zoom: 9
@@ -84,7 +84,7 @@ function OutrageMap(props) {
   return (
     <div>
       <MapGL
-        style={{ width: "100%", height: "100vh" }}
+        style={{ width: "100%", height: "640px" }}
         mapStyle="mapbox://styles/mapbox/light-v9"
         accessToken={TOKEN}
         latitude={viewport.latitude}

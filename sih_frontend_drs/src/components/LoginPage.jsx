@@ -147,14 +147,16 @@ function LoginPage(props) {
               <div className="col-md-6">
                 <div className="myRightCtn">
                   <div className="box">
-                    <header>Hello World!</header>
+                    <header>Bware!</header>
 
-                    <p>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                      sed do eiusmod tempor incididunt ut labore et dolore magna
-                      aliqua. Ut enim ad minim veniam.
+                   <p class="quote">
+                     
+                      "We believe consumer health technologies — apps, wearables, self-diagnosis tools — have the potential
+                       to strengthen the patient-physician connection and improve health outcomes."
+                     
+                     
                     </p>
-                    <input type="button" className="butt_out" value="Learn More" />
+                    
                   </div>
                 </div>
               </div>

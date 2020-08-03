@@ -124,10 +124,10 @@ function OutragePage() {
                 <Tab label="ADD Outrage" />
                 <Tab label="Edit Outrage" />
                 <Tab label="Delete Outrage" />
-                <Tab label="Location Alert" />
-                <Tab label="Add Redzone" />
-                <Tab label="Edit Redzone" />
-                <Tab label="Delete Redzone" />
+                <Tab label="Location History Based Alert" />
+                <Tab label="Add Virtual  Redzone" />
+                <Tab label="Edit Virtual  Redzone" />
+                <Tab label="Delete Virtual  Redzone" />
                 <Tab label="Moblie Register" />
               </Tabs>
             </Paper>
@@ -143,7 +143,7 @@ function OutragePage() {
               <DeleteOutrage getStatus={getStatus} getId={getId} />
             )}
             {value === 3 && (
-              <LocationAlert getStatus={getStatus} getId={getId} />
+              <LocationAlert getStatus={getStatus} getId={getId} getLocation={getLocation} />
             )}
             {value === 4 && (
               <AddRedZone  getLocation={getLocation} getStatus={getStatus} getId={getId} />
