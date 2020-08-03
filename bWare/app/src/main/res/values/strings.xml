@@ -1,7 +1,10 @@
 <resources>
     <string name="app_name">bWare</string>
     <string name="access_token">sk.eyJ1IjoiYWFzaGlrMDgwOCIsImEiOiJja2QwZXVkbDAwdDF0MnpuNzBxazlwOG1wIn0.kZFDvrNVAhIY4MMvuyjC5A</string>
+<<<<<<< HEAD
+=======
     <string name="google_map_access_token">AIzaSyDyZ-uI4Ia-DPWJ_LQiT6JvZcQJf0OxfcM</string>
+>>>>>>> 48a60c4102f13fe2ac8838f56c44906d17ae4186
 
     <string name="app_permission">App Permission</string>
     <string name="i_agree">I Agree</string>
@@ -48,10 +51,13 @@
     <string name="settings">Settings</string>
     <string name="start_date">Start Date :</string>
     <string name="end_date">End Date :</string>
+<<<<<<< HEAD
+=======
     <string name="version_1_0_0">Version : 1.0.0</string>
     <string name="bware">bWare</string>
     <string name="close">Close</string>
     <string name="u00a9_2020_fiends">© 2020 Fiends</string>
+>>>>>>> 48a60c4102f13fe2ac8838f56c44906d17ae4186
 
     <string name="SendOTP">https://sih-drs-prototype-backend-2.herokuapp.com/api/appUsers/register/sendOTP</string>
     <string name="VerifyOTP">https://sih-drs-prototype-backend-2.herokuapp.com/api/appUsers/register/confirmOTP</string>
@@ -62,6 +68,11 @@
     <string name="GetAllDiseases">https://sih-drs-prototype-backend-2.herokuapp.com/api/outrages/diseases/all</string>
     <string name="GetPlaceLevelDiseasesCount">https://sih-drs-prototype-backend-2.herokuapp.com/api/outrages/getDetails/individualCount</string>
     <string name="GetRedZone">https://sih-drs-prototype-backend-2.herokuapp.com/api/appUsers/redZones</string>
+<<<<<<< HEAD
+    <string name="ReportLink">https://drsproject-f58fa.web.app/report</string>
+    <string name="version_1_0_0">Version : 1.0.0</string>
+=======
     <string name="ReportLink">https://project-f58fa.web.app/report</string>
+>>>>>>> 48a60c4102f13fe2ac8838f56c44906d17ae4186
 
 </resources>

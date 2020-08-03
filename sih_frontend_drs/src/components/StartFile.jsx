@@ -5,7 +5,10 @@ import DiseaseSearch from "./DiseaseSearch";
 import DashBoard from "./DashBoard";
 import OutragePage from "./OutragePage";
 import ReportPage from "./ReportPage";
+<<<<<<< HEAD
+=======
 import SymptomsPage from "./SymptomsPage";
+>>>>>>> 48a60c4102f13fe2ac8838f56c44906d17ae4186
 import {
   BrowserRouter as Router,
   Switch,
@@ -78,9 +81,12 @@ function StartFile() {
         <Route path="/login">
           <LoginPage setToken={setToken} isAuth={setAuth} />
         </Route>
+<<<<<<< HEAD
+=======
         <Route path="/symptoms">
           <SymptomsPage />
         </Route>
+>>>>>>> 48a60c4102f13fe2ac8838f56c44906d17ae4186
       </Switch>
     </Router>
   );

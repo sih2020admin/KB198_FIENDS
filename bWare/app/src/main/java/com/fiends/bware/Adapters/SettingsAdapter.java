@@ -1,12 +1,15 @@
 package com.fiends.bware.Adapters;
 
 import android.app.Activity;
+<<<<<<< HEAD
+=======
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+>>>>>>> 48a60c4102f13fe2ac8838f56c44906d17ae4186
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +19,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+<<<<<<< HEAD
+=======
 import com.fiends.bware.Activities.NotificationActivity;
 import com.fiends.bware.Activities.UpdateAddressActivity;
+>>>>>>> 48a60c4102f13fe2ac8838f56c44906d17ae4186
 import com.fiends.bware.Models.SettingsModel;
 import com.fiends.bware.R;
 
@@ -48,6 +54,9 @@ public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.ViewHo
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+<<<<<<< HEAD
+
+=======
                 switch (position) {
                     case 0:
                         activity.startActivity(new Intent(activity, UpdateAddressActivity.class));
@@ -100,6 +109,7 @@ public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.ViewHo
                         dialog1.show();
                         break;
                 }
+>>>>>>> 48a60c4102f13fe2ac8838f56c44906d17ae4186
             }
         });
     }

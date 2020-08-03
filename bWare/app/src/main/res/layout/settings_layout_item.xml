@@ -50,7 +50,11 @@
     <ImageView
         android:id="@+id/imageView12"
         android:layout_width="0dp"
+<<<<<<< HEAD
+        android:layout_height="@dimen/_3sdp"
+=======
         android:layout_height="@dimen/_1sdp"
+>>>>>>> 48a60c4102f13fe2ac8838f56c44906d17ae4186
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

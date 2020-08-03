@@ -91,6 +91,8 @@
                     android:layout_marginEnd="@dimen/_7sdp"
                     android:layout_marginBottom="@dimen/_11sdp" />
 
+<<<<<<< HEAD
+=======
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -135,6 +137,7 @@
 
                 </LinearLayout>
 
+>>>>>>> 48a60c4102f13fe2ac8838f56c44906d17ae4186
                 <include
                     layout="@layout/prevention_layout"
                     android:layout_width="match_parent"

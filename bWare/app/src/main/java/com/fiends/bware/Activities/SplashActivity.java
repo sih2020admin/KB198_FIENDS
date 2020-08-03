@@ -40,8 +40,11 @@ import java.util.concurrent.TimeUnit;
 
 import im.delight.android.location.SimpleLocation;
 
+<<<<<<< HEAD
+=======
 import static com.fiends.bware.Utils.Bware.showAppExitDialog;
 
+>>>>>>> 48a60c4102f13fe2ac8838f56c44906d17ae4186
 public class SplashActivity extends AppCompatActivity {
 
     private LottieAnimationView animationView;
@@ -151,17 +154,25 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     @Override
+<<<<<<< HEAD
+    protected void onResume() {
+=======
     protected void onStart() {
+>>>>>>> 48a60c4102f13fe2ac8838f56c44906d17ae4186
         if (simpleLocation.hasLocationEnabled()) {
             changeActivity();
         } else {
             SimpleLocation.openSettings(this);
         }
+<<<<<<< HEAD
+        super.onResume();
+=======
         super.onStart();
     }
 
     @Override
     public void onBackPressed() {
         showAppExitDialog(SplashActivity.this);
+>>>>>>> 48a60c4102f13fe2ac8838f56c44906d17ae4186
     }
 }

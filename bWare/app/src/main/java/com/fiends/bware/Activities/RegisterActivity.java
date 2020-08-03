@@ -37,8 +37,11 @@ import org.json.JSONObject;
 
 import im.delight.android.location.SimpleLocation;
 
+<<<<<<< HEAD
+=======
 import static com.fiends.bware.Utils.Bware.showAppExitDialog;
 
+>>>>>>> 48a60c4102f13fe2ac8838f56c44906d17ae4186
 
 public class RegisterActivity extends AppCompatActivity implements BwareResponse {
 
@@ -498,9 +501,12 @@ public class RegisterActivity extends AppCompatActivity implements BwareResponse
 
     }
 
+<<<<<<< HEAD
+=======
     @Override
     public void onBackPressed() {
         showAppExitDialog(RegisterActivity.this);
     }
 
+>>>>>>> 48a60c4102f13fe2ac8838f56c44906d17ae4186
 }

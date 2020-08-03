@@ -18,7 +18,10 @@
     "react-chartjs-2": "2.9.0",
     "react-dom": "16.12.0",
     "react-map-gl": "5.2.7",
+<<<<<<< HEAD
+=======
     "react-places-autocomplete": "^7.3.0",
+>>>>>>> 48a60c4102f13fe2ac8838f56c44906d17ae4186
     "react-router-dom": "5.2.0",
     "react-scripts": "3.4.1",
     "react-spring": "8.0.27"

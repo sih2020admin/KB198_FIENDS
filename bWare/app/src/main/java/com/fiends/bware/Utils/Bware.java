@@ -12,7 +12,10 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.location.LocationManager;
 import android.os.Build;
+<<<<<<< HEAD
+=======
 import android.provider.SyncStateContract;
+>>>>>>> 48a60c4102f13fe2ac8838f56c44906d17ae4186
 import android.util.Log;
 import android.widget.ProgressBar;
 
@@ -20,10 +23,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 
+<<<<<<< HEAD
+import com.fiends.bware.R;
+=======
 import com.fiends.bware.Activities.RegisterActivity;
 import com.fiends.bware.Activities.SplashActivity;
 import com.fiends.bware.R;
 import com.fiends.bware.Services.LocationService;
+>>>>>>> 48a60c4102f13fe2ac8838f56c44906d17ae4186
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.Result;
@@ -284,6 +291,8 @@ public class Bware {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+<<<<<<< HEAD
+=======
 
     public static final void showLogOutDialog(Activity activity, ArrayList<String> strings) {
 
@@ -315,4 +324,5 @@ public class Bware {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+>>>>>>> 48a60c4102f13fe2ac8838f56c44906d17ae4186
 }

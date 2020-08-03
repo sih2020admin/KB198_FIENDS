@@ -4,7 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+<<<<<<< HEAD
+=======
     android:background="@color/colorLightPurpleTrans"
+>>>>>>> 48a60c4102f13fe2ac8838f56c44906d17ae4186
     tools:context=".Activities.NotificationActivity">
 
     <androidx.recyclerview.widget.RecyclerView

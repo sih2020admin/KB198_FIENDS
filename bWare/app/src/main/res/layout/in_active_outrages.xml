@@ -115,6 +115,8 @@
 
         </io.supercharge.shimmerlayout.ShimmerLayout>
 
+<<<<<<< HEAD
+=======
         <include
             android:id="@+id/no_red_zone_layer"
             layout="@layout/no_red_zone_card"
@@ -126,6 +128,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+>>>>>>> 48a60c4102f13fe2ac8838f56c44906d17ae4186
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/inactive_outrages_recycler_view"
             android:layout_width="match_parent"
